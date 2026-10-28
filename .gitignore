@@ -1,0 +1,35 @@
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Databases and private candidate files
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+*.sqlite3-*
+private_uploads/
+
+# Python environments, caches and test output
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+test-results.xml
+build/
+dist/
+*.egg-info/
+
+# Local editor and OS state
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.log
