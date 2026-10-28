@@ -1,0 +1,64 @@
+# Local integration environment. Ports bind only to loopback; no public deployment.
+services:
+  database:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: sivrce
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in your shell or local .env}
+      POSTGRES_DB: sivrce
+    volumes:
+      - database:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U sivrce -d sivrce"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+  mail:
+    image: axllent/mailpit:v1
+    ports:
+      - 127.0.0.1:8025:8025
+  scanner:
+    image: clamav/clamav:stable
+    volumes:
+      - scanner:/var/lib/clamav
+  migrate:
+    build: .
+    command: [python, -m, alembic, upgrade, head]
+    environment: &configuration
+      DATABASE_URL: postgresql+psycopg://sivrce:${POSTGRES_PASSWORD}@database:5432/sivrce
+      APP_ENV: development
+      SEED_DEMO: '1'
+      COOKIE_SECURE: '0'
+      PUBLIC_BASE_URL: http://127.0.0.1:8000
+      SMTP_HOST: mail
+      SMTP_PORT: '1025'
+      SMTP_STARTTLS: '0'
+      SMTP_FROM: demo@sivrce.test
+      CLAMAV_HOST: scanner
+      CLAMAV_PORT: '3310'
+    depends_on:
+      database:
+        condition: service_healthy
+  web:
+    build: .
+    environment: *configuration
+    ports:
+      - 127.0.0.1:8000:8000
+    volumes:
+      - documents:/app/private_uploads
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+  worker:
+    build: .
+    command: [python, mail_worker.py]
+    environment: *configuration
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      mail:
+        condition: service_started
+volumes:
+  database:
+  documents:
+  scanner:

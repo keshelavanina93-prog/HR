@@ -5,7 +5,7 @@ from fastapi.testclient import TestClient
 
 # Use a completely isolated test database, never modify the user's dev database.
 TEST_ROOT=Path(__file__).resolve().parent
-os.environ['DATABASE_URL']='sqlite:///'+str(TEST_ROOT/'integration-test.db')
+os.environ['DATABASE_URL']=os.environ.get('TEST_DATABASE_URL','sqlite:///'+str(TEST_ROOT/'integration-test.db'))
 os.environ['SEED_DEMO']='1'
 sys.path.insert(0,str(TEST_ROOT.parent))
 from server import app,engine,Base,Local,User,Membership,Organization,Job
