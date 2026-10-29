@@ -1,0 +1,99 @@
+{% set w = world %}{% set s = w.story %}
+<div class="org-world" style="--org-accent: {{w.accent}}">
+<section class="org-hero">
+  <div class="org-hero-inner frame">
+    <div class="org-hero-copy">
+      <a class="back-link" href="{{'/careers' if organization.kind=='company' else '/learn'}}">← {{'ყველა ვაკანსია' if organization.kind=='company' else 'კურსების კატალოგი'}}</a>
+      <div class="eyebrow">{{'დამსაქმებელი' if organization.kind=='company' else 'სასწავლო მომწოდებელი'}} · {% if organization.demo %}<b class="demo-label">DEMO</b>{% else %}<span class="org-verified">● გადამოწმებული ორგანიზაცია</span>{% endif %}</div>
+      <h1>{{organization.name}}</h1>
+      <p class="org-tagline">{{ s.tagline if s and s.tagline else organization.description }}</p>
+      <dl class="org-facts">
+        <div><dt>ადგილი</dt><dd>{{organization.location}}</dd></div>
+        {% if s and s.team_size %}<div><dt>გუნდი</dt><dd>{{s.team_size}}</dd></div>{% endif %}
+        {% if s and s.founded %}<div><dt>დაარსდა</dt><dd>{{s.founded}}</dd></div>{% endif %}
+        <div><dt>{{'ღია ვაკანსია' if organization.kind=='company' else 'კურსი'}}</dt><dd>{{jobs|length if organization.kind=='company' else courses|length}}</dd></div>
+      </dl>
+      <div class="org-actions">
+        <a class="primary-btn" href="#offerings">{{'ღია ვაკანსიები' if organization.kind=='company' else 'პროგრამები'}} <span>↓</span></a>
+        {% if organization.website and organization.website.startswith('https://') %}<a class="quiet-link" href="{{organization.website}}" rel="noopener noreferrer" target="_blank">ოფიციალური საიტი <span>↗</span></a>{% endif %}
+      </div>
+    </div>
+    <figure class="org-cover">
+      {% if w.cover %}
+      <img src="{{w.cover.url}}" alt="{{w.cover.alt}}" width="{{w.cover.width}}" height="{{w.cover.height}}" fetchpriority="high">
+      <figcaption>{{w.cover.caption}}{% if w.cover.caption %} · {% endif %}ფოტო: {{w.cover.credit}}</figcaption>
+      {% else %}
+      <div class="photo-pending"><span>ფოტო ჯერ არ არის</span><p>SIVRCE არ იყენებს სტოკ ფოტოებს. აქ გამოჩნდება {{organization.name}}-ის ნამდვილი სამუშაო გარემო, როცა ორგანიზაცია ფოტოს ატვირთავს.</p></div>
+      {% endif %}
+    </figure>
+  </div>
+</section>
+
+{% if not s %}
+<section class="frame org-empty"><p>{{organization.description}}</p><p class="small-print">ორგანიზაციას საკუთარი გვერდი ჯერ არ შეუვსია. ამიტომ აქ მხოლოდ საბაზისო ინფორმაცია და აქტიური შეთავაზებები ჩანს.</p></section>
+{% else %}
+{% if s.mission %}
+<section class="frame org-section org-mission">
+  <span class="org-label">01 · რას ვაკეთებთ</span>
+  <p class="org-lead">{{s.mission}}</p>
+</section>
+{% endif %}
+
+{% if w.day %}
+<section class="org-day">
+  <div class="frame">
+    <div class="org-section-head"><span class="org-label">02 · ჩვეულებრივი სამუშაო დღე</span><h2>როგორ გადის დღე<br><i>შიგნიდან.</i></h2></div>
+    <ol class="day-line">
+      {% for e in w.day %}<li><time>{{e.time}}</time><h3>{{e.title}}</h3><p>{{e.body}}</p></li>{% endfor %}
+    </ol>
+  </div>
+</section>
+{% endif %}
+
+{% if w.people %}
+<section class="frame org-section">
+  <div class="org-section-head"><span class="org-label">03 · ადამიანები</span><h2>ვისთან ერთად<br><i>იმუშავებ.</i></h2></div>
+  <div class="people-grid">
+    {% for p in w.people %}
+    <figure class="person">
+      {% if p.photo %}<img src="{{p.photo.url}}" alt="{{p.photo.alt}}" loading="lazy" width="{{p.photo.width}}" height="{{p.photo.height}}">
+      {% else %}<div class="person-monogram" aria-hidden="true">{{p.name[:1]}}</div>{% endif %}
+      <figcaption><b>{{p.name}}</b><span>{{p.role}}</span>{% if p.quote %}<q>{{p.quote}}</q>{% endif %}</figcaption>
+    </figure>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<section class="frame org-section org-pair">
+  {% if w.hard_parts %}
+  <div class="org-hard">
+    <span class="org-label">04 · რა არის აქ რთული</span>
+    <h2>გულწრფელად,<br><i>დაწყებამდე.</i></h2>
+    <ul>{% for line in w.hard_parts %}<li>{{line}}</li>{% endfor %}</ul>
+  </div>
+  {% endif %}
+  <div class="org-ways">
+    {% if s.culture %}<div><span class="org-label">როგორ ვმუშაობთ</span><p>{{s.culture}}</p></div>{% endif %}
+    {% if s.hiring_promise %}<div><span class="org-label">შერჩევის დაპირება</span><p>{{s.hiring_promise}}</p></div>{% endif %}
+  </div>
+</section>
+{% endif %}
+
+{% if w.gallery %}
+<section class="frame org-section">
+  <div class="org-section-head"><span class="org-label">სამუშაო გარემო</span></div>
+  <div class="org-gallery">
+    {% for p in w.gallery %}<figure><img src="{{p.url}}" alt="{{p.alt}}" loading="lazy" width="{{p.width}}" height="{{p.height}}"><figcaption>{{p.caption}}{% if p.caption %} · {% endif %}ფოტო: {{p.credit}}</figcaption></figure>{% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<section class="frame organization-offerings catalog" id="offerings">
+  <div class="list-header"><span>{{'ღია ვაკანსიები' if organization.kind=='company' else 'ხელმისაწვდომი სწავლება'}}</span><span>{{jobs|length if organization.kind=='company' else courses|length}} შეთავაზება</span></div>
+  {% for j in jobs %}<a class="job-row" href="/careers/{{j.id}}"><span class="job-number">{{'%02d'|format(loop.index)}}</span><div class="job-info"><span class="job-company">{{j.department}} · {{j.work_mode}}</span><h3>{{j.title}}</h3></div><div class="job-pay"><strong>{{'{:,}'.format(j.salary_min)}}–{{'{:,}'.format(j.salary_max)}} ₾</strong><small>თვეში / {{'დარიცხული' if j.salary_basis=='gross' else 'ხელზე'}}</small></div><span class="list-arrow">↗</span></a>{% endfor %}
+  {% for c in courses %}<a class="course-row" href="/learn/{{c.id}}"><span class="course-num">{{'%02d'|format(loop.index)}}</span><div class="course-core"><span class="course-category">{{c.category}}</span><h3>{{c.title}}</h3><p>{{c.description}}</p></div><div class="course-extras"><b>{{c.price}} ₾</b></div><span class="list-arrow">↗</span></a>{% endfor %}
+  {% if not jobs and not courses %}<p class="empty-list">ამ ეტაპზე აქტიური შეთავაზება არ არის.</p>{% endif %}
+</section>
+<p class="frame org-source">ტექსტს და ფოტოებს აწვდის თავად ორგანიზაცია. SIVRCE ამოწმებს ორგანიზაციის იდენტობას; ორგანიზაცია ადასტურებს ფოტოების გამოყენების უფლებას და მათზე გამოსახული ადამიანების თანხმობას.{% if s %} ბოლო განახლება: {{s.updated.strftime('%d.%m.%Y')}}.{% endif %}</p>
+</div>

@@ -10,3 +10,4 @@ google-auth[requests]>=2.35,<3
 pytest>=8,<10
 alembic>=1.15,<2
 psycopg[binary]>=3.2,<4
+Pillow>=11,<14

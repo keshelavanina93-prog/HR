@@ -1,0 +1,73 @@
+{% from 'partials/covers.html' import episode_cover %}
+<section class="ep-hero ep-hero-{{cover.tone}}">
+  <div class="frame ep-hero-inner">
+    <div class="ep-hero-copy">
+      <a class="back-link" href="/voices">← Voices</a>
+      <div class="eyebrow">Voices №{{cover.number}} · {{cover.topic}}</div>
+      <h1>{{episode.title}}</h1>
+      <p class="ep-deck">{{episode.summary}}</p>
+      <dl class="ep-facts">
+        <div><dt>ავტორი / გამომცემელი</dt><dd>{{episode.publisher}}</dd></div>
+        <div><dt>პლატფორმა</dt><dd>Spotify · ოფიციალური პლეიერი</dd></div>
+      </dl>
+    </div>
+    {{ episode_cover(cover, episode.title, episode.publisher) }}
+  </div>
+</section>
+
+<section class="frame ep-levels" aria-label="ქართული ხელმისაწვდომობის დონეები">
+  <div class="org-section-head"><span class="org-label">ქართული ენის ხელმისაწვდომობა</span></div>
+  <ol>
+    {% for l in levels %}
+    <li class="level level-{{l.state}}"><span class="level-no">{{'%02d'|format(loop.index)}}</span><b>{{l.title}}</b><span class="level-state">{{ {'open':'ხელმისაწვდომია','pending':'მზადდება','locked':'ჩაკეტილია'}[l.state] }}</span><p>{{l.note}}</p></li>
+    {% endfor %}
+  </ol>
+</section>
+
+<section class="frame ep-body">
+  <div class="ep-listen">
+    <span class="org-label">01 · მოუსმინე ორიგინალს</span>
+    {% if embed %}
+    <iframe title="{{episode.title}} — Spotify პლეიერი" src="{{embed}}" width="100%" height="352" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+    {% endif %}
+    <a class="quiet-link" href="{{episode.spotify}}" target="_blank" rel="noopener noreferrer">პირველწყარო Spotify-ზე <span>↗</span></a>
+  </div>
+  <article class="ep-analysis">
+    <span class="org-label">02 · SIVRCE-ის ქართული ანალიზი</span>
+    {% if editorial %}
+      {% if key_points %}<ul class="ep-points">{% for k in key_points %}<li>{{k}}</li>{% endfor %}</ul>{% endif %}
+      {% for para in editorial.analysis.split('\n\n') %}<p>{{para}}</p>{% endfor %}
+      <p class="ep-byline">ავტორი: {{editorial.author}} · განახლდა {{editorial.updated.strftime('%d.%m.%Y')}}</p>
+    {% else %}
+      <h2>ანალიზი<br><i>მზადდება.</i></h2>
+      <p>რედაქცია ჯერ უსმენს და ამოწმებს ფაქტებს. სხვისი ტრანსკრიპტის ავტომატურ თარგმანს არ ვაქვეყნებთ. აქ გამოჩნდება მხოლოდ SIVRCE-ის საკუთარი, ხელმოწერილი ტექსტი.</p>
+    {% endif %}
+  </article>
+</section>
+
+<section class="frame ep-related">
+  <div class="org-section-head"><span class="org-label">03 · ამ თემასთან დაკავშირებული შესაძლებლობები</span></div>
+  {% if related_courses or related_jobs %}
+  <div class="related-grid">
+    {% for c in related_courses %}<a href="/learn/{{c.id}}" class="related-card"><span>კურსი · {{c.category}}</span><b>{{c.title}}</b><small>{{c.price}} ₾ · {{c.duration}}</small></a>{% endfor %}
+    {% for j in related_jobs %}<a href="/careers/{{j.id}}" class="related-card"><span>ვაკანსია · {{j.company}}</span><b>{{j.title}}</b><small>{{'{:,}'.format(j.salary_min)}}–{{'{:,}'.format(j.salary_max)}} ₾</small></a>{% endfor %}
+  </div>
+  {% else %}<p class="empty-list">ამ თემაზე აქტიური კურსი ან ვაკანსია ჯერ არ არის.</p>{% endif %}
+</section>
+
+<section class="frame ep-rights">
+  <span class="org-label">უფლებების რეესტრი</span>
+  <dl>
+    <div><dt>გამოყენების საფუძველი</dt><dd>{{ {'official_embed':'ოფიციალური ჩაშენება (embed)','original':'SIVRCE-ის ორიგინალი','licensed_excerpt':'ლიცენზირებული ფრაგმენტი','licensed_translation':'ლიცენზირებული თარგმანი','licensed_dubbing':'ლიცენზირებული გახმოვანება'}[rights.permitted_use] if rights else 'ოფიციალური ჩაშენება (embed)' }}</dd></div>
+    <div><dt>უფლების მფლობელი</dt><dd>{{rights.rights_holder if rights else episode.publisher}}</dd></div>
+    <div><dt>შემოწმდა</dt><dd>{{rights.checked_on.strftime('%d.%m.%Y') if rights else 'ცალკე ლიცენზია არ არის'}}</dd></div>
+  </dl>
+  <p class="small-print">SIVRCE არ ამბობს, რომ ავტორი მას უჭერს მხარს. ორიგინალი ჩანაწერი რჩება გამომცემლის პლატფორმაზე.</p>
+</section>
+
+{% if others %}
+<section class="frame ep-more">
+  <div class="org-section-head"><span class="org-label">კიდევ Voices-ში</span></div>
+  <div class="ep-more-grid">{% for o in others %}<a href="/voices/{{o.id}}">{{ episode_cover(o.cover, o.title, '', 'mini') }}<b>{{o.title}}</b></a>{% endfor %}</div>
+</section>
+{% endif %}

@@ -89,6 +89,8 @@ async def lifespan(app:FastAPI):
  else:Base.metadata.create_all(engine)
  seed()
  seed_editorial()
+ from features.showcase import seed_showcase
+ seed_showcase()
  yield
 app=FastAPI(title='SIVRCE — Editorial Talent & Learning Exchange',lifespan=lifespan,docs_url='/dev/docs' if os.getenv('ENABLE_DOCS')=='1' else None)
 app.mount('/static',StaticFiles(directory=ROOT/'static'),name='static')
@@ -461,11 +463,10 @@ def careers_detail(jid:int,request:Request,db:Session=Depends(sessdb)):
  return templates.TemplateResponse(request,'index.html',{'page':'job','job':job_dict(db,j),'job_schema':job_schema(db,j,request)})
 @app.get('/organizations/{slug}',response_class=HTMLResponse)
 def organization_profile(slug:str,request:Request,db:Session=Depends(sessdb)):
+ from features.showcase import organization_context
  org=db.scalar(select(Organization).where(Organization.slug==slug,Organization.verified==True))
  if not org:jsonerr(404,'ორგანიზაცია ვერ მოიძებნა')
- jobs=[job_dict(db,j) for j in db.scalars(select(Job).where(Job.org_id==org.id,Job.status=='published',Job.deadline>=dt.date.today().isoformat())).all()] if org.kind=='company' and 'hire_read' in permissions else []
- courses=db.scalars(select(Course).where(Course.org_id==org.id,Course.status=='published')).all() if org.kind=='provider' else []
- return templates.TemplateResponse(request,'index.html',{'page':'organization','organization':org,'jobs':jobs,'courses':courses})
+ return templates.TemplateResponse(request,'index.html',organization_context(db,org))
 
 @app.get('/learn',response_class=HTMLResponse)
 def learn(request:Request,db:Session=Depends(sessdb)):
@@ -483,8 +484,9 @@ def exchange(request:Request,db:Session=Depends(sessdb)):
  return templates.TemplateResponse(request,'index.html',{'page':'exchange','briefs':[{'brief':b,'org':o} for b,o in rows]})
 @app.get('/voices',response_class=HTMLResponse)
 def voices_page(request:Request,db:Session=Depends(sessdb)):
+ from features.showcase import episode_covers
  episodes=[episode_dict(ep) for ep in db.scalars(select(Episode).where(Episode.status=='published').order_by(Episode.id))]
- return templates.TemplateResponse(request,'index.html',{'page':'voices','episodes':episodes})
+ return templates.TemplateResponse(request,'index.html',{'page':'voices','episodes':episodes,'covers':episode_covers(db)})
 @app.get('/studio',response_class=HTMLResponse)
 def studio_page(request:Request):return templates.TemplateResponse(request,'index.html',{'page':'studio'})
 @app.get('/standards',response_class=HTMLResponse)
@@ -792,6 +794,8 @@ def proposal_version(db,pid):
 # Register additive workflows after the original model definitions.
 from features.routes import router as platform_router
 app.include_router(platform_router)
+from features.showcase import router as showcase_router
+app.include_router(showcase_router)
 from features.middleware import install_middleware
 install_middleware(app)
 
