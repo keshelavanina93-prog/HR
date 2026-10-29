@@ -1,0 +1,29 @@
+<!doctype html><html lang="ka"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>შეთავაზებების შედარება — SIVRCE Develop</title><link rel="stylesheet" href="/static/product_v5.css"><link rel="stylesheet" href="/static/brand.css"><link rel="stylesheet" href="/static/worlds.css"><script src="/static/compare.js" defer></script></head>
+<body class="new-v5 me-body cmp-body" data-brief="{{brief_id or ''}}"><a class="skip-link" href="#cmp-main">შინაარსზე გადასვლა</a>
+<header class="pe-top"><a class="side-brand" href="/workspace">SIVRCE<span>.</span></a><span class="pe-org">Develop · ტრენინგის შეთავაზებების შედარება</span><a class="pe-preview" href="/workspace/develop">ყველა მოთხოვნა</a><a class="pe-preview" href="/workspace">სამუშაო სივრცე ↗</a></header>
+<main class="cmp-layout" id="cmp-main">
+  <p id="cmp-status" class="pe-status" role="status" aria-live="polite"></p>
+  <div id="cmp-blocked" class="me-signin" hidden></div>
+
+  <section id="cmp-list" hidden>
+    <span class="org-label">Develop</span><h1 class="cmp-title">სასწავლო მოთხოვნები</h1>
+    <p class="pe-hint">აირჩიე მოთხოვნა, რომ მომწოდებლების შეთავაზებები გვერდიგვერდ შეადარო.</p>
+    <div id="cmp-briefs" class="cmp-briefs"></div>
+  </section>
+
+  <section id="cmp-view" hidden>
+    <header class="cmp-brief">
+      <div><span class="org-label" id="cmp-brief-label">მოთხოვნა</span><h1 class="cmp-title" id="cmp-brief-title"></h1><p id="cmp-brief-goal" class="cmp-goal"></p></div>
+      <dl class="cmp-facts" id="cmp-facts"></dl>
+    </header>
+
+    <div class="cmp-tools">
+      <fieldset class="cmp-weights"><legend>რა არის თქვენთვის მნიშვნელოვანი?</legend><div id="cmp-weight-list"></div>
+        <p class="pe-hint">ფასის ქულა = ყველაზე დაბალი ფასი ÷ ამ შეთავაზების ფასი × 5. დანარჩენი სამი — თქვენი გუნდის წევრების შეფასებების საშუალო (1–5). წონები ინახება მხოლოდ ამ ბრაუზერში.</p></fieldset>
+      <div class="cmp-human"><b>გადაწყვეტილებას იღებს ადამიანი.</b><p>SIVRCE ქულას ითვლის მხოლოდ თქვენივე წონებითა და შეფასებებით და არ ირჩევს მომწოდებელს ავტომატურად. <span id="cmp-raters"></span></p></div>
+    </div>
+
+    <div class="cmp-scroll" tabindex="0" aria-label="შეთავაზებების შედარების ცხრილი"><div class="cmp-matrix" id="cmp-matrix" role="table"></div></div>
+  </section>
+</main>
+</body></html>

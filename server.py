@@ -91,6 +91,8 @@ async def lifespan(app:FastAPI):
  seed_editorial()
  from features.showcase import seed_showcase
  seed_showcase()
+ from features.develop import seed_develop
+ seed_develop()
  yield
 app=FastAPI(title='SIVRCE — Editorial Talent & Learning Exchange',lifespan=lifespan,docs_url='/dev/docs' if os.getenv('ENABLE_DOCS')=='1' else None)
 app.mount('/static',StaticFiles(directory=ROOT/'static'),name='static')
@@ -803,6 +805,8 @@ from features.showcase import router as showcase_router
 app.include_router(showcase_router)
 from features.candidate import router as candidate_router
 app.include_router(candidate_router)
+from features.develop import router as develop_router
+app.include_router(develop_router)
 from features.middleware import install_middleware
 install_middleware(app)
 

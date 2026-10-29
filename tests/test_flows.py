@@ -98,10 +98,10 @@ def test_training_proposals_are_private_and_selectable():
   propid=r.json()['id']
   assert supplier.get('/api/organizations/2/proposals').status_code==200
   assert candidate.get('/api/organizations/1/proposals').status_code==403
-  assert buyer.get('/api/organizations/1/proposals').json()[0]['id']==propid
+  assert propid in [p['id'] for p in buyer.get('/api/organizations/1/proposals').json()]
   assert supplier.post(f'/api/proposals/{propid}/select',json={}).status_code==403
   assert buyer.post(f'/api/proposals/{propid}/select',json={}).status_code==200
-  assert supplier.get('/api/organizations/2/proposals').json()[0]['status']=='selected'
+  assert next(p for p in supplier.get('/api/organizations/2/proposals').json() if p['id']==propid)['status']=='selected'
 
 def test_podcast_and_no_autoplay():
  with TestClient(app) as c:
