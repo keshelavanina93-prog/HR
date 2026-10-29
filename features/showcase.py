@@ -424,3 +424,47 @@ def seed_showcase():
         ]):
             db.add(OrgPerson(org_id=org.id, position=i, name=name, role=role, quote=quote))
         db.commit()
+
+
+# ---------- Job and course pages ----------
+
+# Georgian payroll: 2% employee pension, then 20% income tax on the remainder.
+NET_RATIO = 0.98*0.8
+
+
+def pay_view(job):
+    low, high = job['salary_min'], job['salary_max']
+    if job['salary_basis'] == 'gross':
+        gross, net = (low, high), (round(low*NET_RATIO, -1), round(high*NET_RATIO, -1))
+    else:
+        net, gross = (low, high), (round(low/NET_RATIO, -1), round(high/NET_RATIO, -1))
+    return {'gross': tuple(int(x) for x in gross), 'net': tuple(int(x) for x in net), 'stated': job['salary_basis']}
+
+
+def hiring_steps(text):
+    parts = [p.strip(' .') for p in re.split(r'→|->|\n|;', text or '') if p.strip(' .')]
+    return parts or [text]
+
+
+def accent_map(db, org_ids):
+    rows = db.execute(select(OrgStory.org_id, OrgStory.accent).where(OrgStory.org_id.in_(set(org_ids)))).all() if org_ids else []
+    found = {oid: ACCENTS.get(a, ACCENTS['ink']) for oid, a in rows}
+    return {oid: found.get(oid, ACCENTS['ink']) for oid in org_ids}
+
+
+def job_context(db, job):
+    org = db.get(Organization, job['org_id'])
+    world = story_payload(db, org)
+    today = dt.date.today().isoformat()
+    more = [job_dict(db, j) for j in db.scalars(select(Job).where(Job.org_id == org.id, Job.id != job['id'], Job.status == 'published',
+                                                                   Job.deadline >= today).limit(3))]
+    return {'world': world, 'organization': org, 'pay': pay_view(job), 'steps': hiring_steps(job['hiring_steps']),
+            'expired': job['deadline'] < today, 'more_jobs': more}
+
+
+def course_context(db, course, provider):
+    world = story_payload(db, provider)
+    others = db.scalars(select(Course).where(Course.org_id == provider.id, Course.id != course.id, Course.status == 'published').limit(3)).all()
+    return {'world': world, 'other_courses': others,
+            'outcome_list': [l.strip() for l in course.outcomes.split('\n') if l.strip()],
+            'module_list': [l.strip() for l in course.curriculum.split('\n') if l.strip()]}

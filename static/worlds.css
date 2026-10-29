@@ -222,3 +222,101 @@
 .pe-score .pe-hint{color:#ffffff99}
 @media(max-width:900px){.pe-layout{grid-template-columns:1fr}.pe-side{position:static;order:-1}}
 @media(max-width:560px){.pe-two,.pe-row{grid-template-columns:1fr}.pe-row .pe-wide,.pe-row .pe-remove{grid-column:auto;grid-row:auto}}
+
+/* ---------- Job page ---------- */
+.job-hero,.course-hero{background:var(--org-accent);color:#fff}
+.job-hero-inner,.course-hero-inner{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(280px,.9fr);gap:clamp(28px,5vw,90px);padding-top:clamp(32px,4vw,60px);padding-bottom:clamp(36px,5vw,72px);align-items:end}
+.job-hero .back-link,.course-hero .back-link{display:block;width:max-content;color:#ffffffb3;margin-bottom:30px}
+.job-org{display:inline-flex;gap:14px;align-items:center;color:#fff;margin-bottom:26px}
+.job-org-mark{width:46px;height:46px;display:flex;align-items:center;justify-content:center;background:#ffffff1f;font-weight:800;font-size:22px;
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%)}
+.job-org b{display:block;font-size:15px}
+.job-org small{font-size:12px;color:#ffffffb3}
+.job-org:hover small{color:#fff}
+.job-hero h1,.course-hero h1{font-family:var(--sans);font-weight:800;font-stretch:72%;font-variation-settings:'wdth' 72;font-size:clamp(40px,5.4vw,92px);line-height:.98;letter-spacing:.005em;color:#fff;margin:0 0 24px}
+.course-hero h1{margin-top:18px}
+.course-hero .eyebrow{color:#ffffffcc}
+.course-hero .org-tagline{margin-bottom:30px}
+.job-chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.job-chips li{border:1px solid #ffffff59;padding:6px 12px;font-size:13px}
+.job-pay-panel,.course-price{background:#fff;color:var(--ink);padding:clamp(22px,2.5vw,32px);
+  clip-path:polygon(0 0,calc(100% - 26px) 0,100% 26px,100% 100%,0 100%)}
+.pay-line{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.pay-line b{white-space:nowrap;font-weight:800;font-stretch:78%;font-variation-settings:'wdth' 78;font-size:clamp(24px,2.3vw,34px)}
+.pay-line span{font-size:12px;color:var(--quiet);text-align:right}
+.job-pay-panel p{font-size:11.5px;color:var(--quiet);line-height:1.6;margin-top:14px}
+.course-price>b{display:block;font-weight:800;font-stretch:78%;font-variation-settings:'wdth' 78;font-size:clamp(40px,4vw,60px);line-height:1;margin-bottom:18px}
+.course-price dl{margin:0;display:grid;gap:0}
+.course-price dl div{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--line);font-size:13px}
+.course-price dt{color:var(--quiet)}
+.course-price dd{margin:0;font-weight:700;text-align:right}
+.job-layout,.course-body{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:clamp(28px,5vw,90px);padding-top:clamp(48px,6vw,90px);padding-bottom:60px;align-items:start}
+.job-block{padding-bottom:clamp(36px,4vw,56px);margin-bottom:clamp(36px,4vw,56px);border-bottom:1px solid var(--line)}
+.job-block:last-child{border-bottom:0}
+.job-purpose .org-lead{font-size:clamp(20px,2vw,30px)}
+.job-list{list-style:none;padding:0;margin:0;display:grid;gap:14px}
+.job-list li{padding-left:28px;position:relative;font-size:16px;line-height:1.65}
+.job-list li::before{content:'';position:absolute;left:0;top:.7em;width:14px;height:2px;background:var(--org-accent)}
+.job-benefits li::before{content:'+';background:none;width:auto;height:auto;top:0;font-weight:800;color:var(--org-accent)}
+.job-steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));counter-reset:step}
+.job-steps li{padding:18px 18px 18px 0;border-top:3px solid var(--ink);display:grid;gap:8px;position:relative}
+.job-steps li:not(:last-child)::after{content:'→';position:absolute;right:10px;top:16px;color:var(--soft-ink)}
+.job-steps li:first-child{border-top-color:var(--org-accent)}
+.job-steps span{font-size:11px;color:var(--quiet);font-weight:700}
+.job-steps b{font-size:15px;line-height:1.4;padding-right:22px}
+.job-promise{margin-top:18px;background:var(--white);padding:16px 18px;font-size:14px;line-height:1.7;box-shadow:inset 3px 0 0 var(--org-accent)}
+.job-inside-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:22px}
+.job-inside-photo{margin:0;grid-column:1/-1}
+.job-inside-photo img{width:100%;aspect-ratio:21/9;object-fit:cover;display:block}
+.job-inside-photo figcaption{font-size:11px;color:var(--quiet);padding-top:6px}
+.job-day{list-style:none;margin:0;padding:20px;background:var(--paper2);display:grid;gap:12px}
+.job-day li{display:grid;grid-template-columns:56px 1fr;gap:10px;font-size:14px}
+.job-day time{font-weight:800}
+.job-hard{background:var(--ink);color:var(--porcelain);padding:20px}
+.job-hard b{display:block;margin-bottom:10px}
+.job-hard ul{margin:0;padding-left:18px;display:grid;gap:8px;font-size:13.5px;line-height:1.6}
+.job-aside{position:sticky;top:24px;display:grid;gap:18px}
+.job-apply{display:grid;gap:12px;padding:26px}
+.job-apply .org-label{margin-bottom:4px}
+.job-apply-facts{display:grid;grid-template-columns:1fr 1fr;margin:0 0 6px;border-top:1px solid var(--line)}
+.job-apply-facts div{padding-top:10px}
+.job-apply-facts dt{font-size:11px;color:var(--quiet)}
+.job-apply-facts dd{margin:4px 0 0;font-weight:700}
+.job-closed{font-weight:600;color:var(--oxblood);line-height:1.6}
+.job-privacy{font-size:13px;border-top:1px solid var(--line);padding-top:12px;margin-top:4px}
+.job-privacy summary{cursor:pointer;font-weight:600}
+.job-privacy p{margin-top:10px;color:var(--quiet);line-height:1.7}
+.job-more{display:grid;gap:0;background:var(--white);padding:20px 22px}
+.job-more a{display:grid;gap:4px;padding:12px 0;border-top:1px solid var(--line)}
+.job-more a:hover b{color:var(--cobalt)}
+.job-more small{font-size:12px;color:var(--quiet)}
+
+/* ---------- Course page ---------- */
+.outcome-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.outcome-grid li{background:var(--white);padding:22px;display:grid;gap:10px;box-shadow:inset 0 3px 0 var(--org-accent)}
+.outcome-grid span{font-weight:800;font-size:28px;font-stretch:75%;font-variation-settings:'wdth' 75;color:var(--org-accent)}
+.outcome-grid p{font-size:15px;line-height:1.6;font-weight:600}
+.module-line{list-style:none;margin:0;padding:0 0 0 22px;border-left:2px solid var(--ink);display:grid;gap:22px}
+.module-line li{position:relative;display:grid;gap:4px}
+.module-line li::before{content:'';position:absolute;left:-29px;top:4px;width:12px;height:12px;background:var(--org-accent)}
+.module-line span{font-size:11px;color:var(--quiet);font-weight:700;letter-spacing:.04em}
+.module-line b{font-size:17px}
+.course-trainer{font-size:20px;font-weight:700}
+.cohort-card{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.cohort-card b{display:block}
+.cohort-card small{font-size:12px;color:var(--quiet)}
+
+/* Careers index: company colour seam */
+.job-row{box-shadow:inset 3px 0 0 var(--org-accent,transparent)}
+.job-row .job-number{padding-left:10px}
+
+@media(max-width:980px){
+  .job-hero-inner,.course-hero-inner,.job-layout,.course-body{grid-template-columns:1fr}
+  .job-aside{position:static}
+  .job-layout .job-aside{order:-1}
+}
+@media(max-width:590px){
+  .job-steps{grid-template-columns:1fr}
+  .job-steps li::after{display:none}
+  .job-hero h1,.course-hero h1{font-size:clamp(34px,10vw,52px)}
+}

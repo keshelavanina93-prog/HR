@@ -122,3 +122,30 @@ def test_episode_page_levels_follow_rights_registry():
         page = c.get('/voices/1').text
         assert 'SIVRCE რედაქცია' in page and 'Example Publisher' in page
         assert page.count('level-locked') == 1
+
+
+def test_pay_view_converts_between_gross_and_net():
+    assert showcase.pay_view({'salary_min': 1000, 'salary_max': 2000, 'salary_basis': 'gross'}) == \
+        {'gross': (1000, 2000), 'net': (780, 1570), 'stated': 'gross'}
+    assert showcase.pay_view({'salary_min': 784, 'salary_max': 1568, 'salary_basis': 'net'})['gross'] == (1000, 2000)
+    assert showcase.hiring_steps('განაცხადი → ინტერვიუ → შეთავაზება') == ['განაცხადი', 'ინტერვიუ', 'შეთავაზება']
+
+
+def test_job_page_shows_company_world_and_closes_after_deadline():
+    from server import Job
+    with TestClient(app) as c:
+        page = c.get('/careers/1').text
+        assert 'ხელზე' in page and 'დარიცხული' in page and 'შერჩევის გზა' in page
+        assert 'როგორ მუშაობენ' in page and 'ვინ ნახავს ჩემს მონაცემებს' in page
+        assert 'data-modal="apply"' in page
+        with Local() as db:
+            db.get(Job, 1).deadline = '2020-01-01'; db.commit()
+        closed = c.get('/careers/1').text
+        assert 'განაცხადის მიღება დასრულდა' in closed and 'data-modal="apply"' not in closed
+
+
+def test_course_page_lists_outcomes_modules_and_cohorts():
+    with TestClient(app) as c:
+        page = c.get('/learn/1').text
+        assert 'რას შეძლებ კურსის შემდეგ' in page and 'მოდული 1' in page
+        assert 'data-course-interest=' in page and 'data-modal="brief-from-course"' in page

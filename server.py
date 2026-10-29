@@ -455,12 +455,15 @@ def home(request:Request,db:Session=Depends(sessdb)):
 @app.get('/careers',response_class=HTMLResponse)
 def careers(request:Request,db:Session=Depends(sessdb)):
  jobs=[job_dict(db,j) for j in db.scalars(select(Job).where(Job.status=='published').order_by(desc(Job.created))).all() if db.get(Organization,j.org_id).verified and j.deadline>=dt.date.today().isoformat()]
- return templates.TemplateResponse(request,'index.html',{'page':'careers','jobs':jobs})
+ from features.showcase import accent_map
+ return templates.TemplateResponse(request,'index.html',{'page':'careers','jobs':jobs,'accents':accent_map(db,[j['org_id'] for j in jobs])})
 @app.get('/careers/{jid}',response_class=HTMLResponse)
 def careers_detail(jid:int,request:Request,db:Session=Depends(sessdb)):
  j=db.get(Job,jid)
  if not j or j.status!='published' or not db.get(Organization,j.org_id).verified:jsonerr(404,'ვაკანსია არ არსებობს')
- return templates.TemplateResponse(request,'index.html',{'page':'job','job':job_dict(db,j),'job_schema':job_schema(db,j,request)})
+ from features.showcase import job_context
+ data=job_dict(db,j)
+ return templates.TemplateResponse(request,'index.html',{'page':'job','job':data,'job_schema':job_schema(db,j,request),**job_context(db,data)})
 @app.get('/organizations/{slug}',response_class=HTMLResponse)
 def organization_profile(slug:str,request:Request,db:Session=Depends(sessdb)):
  from features.showcase import organization_context
@@ -477,7 +480,9 @@ def learn(request:Request,db:Session=Depends(sessdb)):
 def learn_detail(cid:int,request:Request,db:Session=Depends(sessdb)):
  c=db.get(Course,cid)
  if not c or c.status!='published' or not db.get(Organization,c.org_id).verified:jsonerr(404,'კურსი არ არსებობს')
- return templates.TemplateResponse(request,'index.html',{'page':'course','course':c,'provider':db.get(Organization,c.org_id),'cohorts':db.scalars(select(Cohort).where(Cohort.course_id==cid)).all()})
+ from features.showcase import course_context
+ provider=db.get(Organization,c.org_id)
+ return templates.TemplateResponse(request,'index.html',{'page':'course','course':c,'provider':provider,'cohorts':db.scalars(select(Cohort).where(Cohort.course_id==cid)).all(),**course_context(db,c,provider)})
 @app.get('/exchange',response_class=HTMLResponse)
 def exchange(request:Request,db:Session=Depends(sessdb)):
  rows=db.execute(select(Brief,Organization).join(Organization,Brief.org_id==Organization.id).where(Brief.status=='published',Brief.visibility=='public',Organization.verified==True)).all()
