@@ -167,7 +167,7 @@ def test_v5_connected_company_onboarding_page():
   page=c.get('/start')
   assert page.status_code==200
   assert 'შედი ან შექმენი ანგარიში' in page.text
-  assert 'ორგანიზაციის დამატება და გადამოწმების მოთხოვნა' in page.text
+  assert 'გადამოწმების მოთხოვნა' in page.text and 'data-role="provider"' in page.text
   assert '/static/onboarding_v5.js' in page.text
   js=c.get('/static/onboarding_v5.js')
   assert js.status_code==200
