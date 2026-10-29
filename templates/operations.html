@@ -1,7 +1,41 @@
 <!doctype html>
-<html lang="ka"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SIVRCE — სამუშაო სივრცე</title><link rel="stylesheet" href="/static/product_v5.css"><link rel="stylesheet" href="/static/operations.css"><link rel="stylesheet" href="/static/brand.css"><script src="/static/operations.js" defer></script></head>
-<body class="new-v5"><a class="skip-link" href="#mainwork">შინაარსზე გადასვლა</a>
-<div class="operations-shell"><aside class="operations-sidebar"><a class="side-brand" href="/">SIVRCE<span>.</span><small>შენი სამუშაო სივრცე</small></a><label for="organization">ორგანიზაცია</label><select id="organization"><option value="">პირადი სივრცე</option></select><nav aria-label="სამუშაო სივრცე" id="operations-nav"><button data-view="overview" aria-current="page">მიმოხილვა</button><button data-view="jobs" data-permission="hire_read">ვაკანსიები და დრაფტები</button><button data-view="applications" data-permission="hire_read">კანდიდატები</button><button data-view="develop" data-permission="develop_read">სწავლება და შესყიდვა</button><button data-view="catalog" data-permission="catalog_read">კურსები და ჯგუფები</button><button data-view="admin" data-admin hidden>მოდერაციის ოპერაციები</button><button data-view="team" data-permission="team">გუნდი და უფლებები</button><button data-view="personal">ჩემი პროფილი</button><button data-view="inbox">შეტყობინებები <span id="unread-count"></span></button></nav><div class="operations-foot"><a href="/careers">კარიერა ↗</a><a href="/learn">სასწავლო პროგრამები ↗</a><a href="/studio">კატალოგი და მოდერაცია ↗</a><a href="/account">ანგარიში და უსაფრთხოება ↗</a></div></aside>
-<main id="mainwork" class="operations-main"><header class="operations-header"><div><p class="panel-kicker" id="context-name">SIVRCE</p><h1 id="view-title">მიმოხილვა</h1></div><a class="btn-outline" href="/start">ანგარიში ↗</a></header><div id="workspace-status" role="status" aria-live="polite"></div><div id="workspace-content" aria-busy="true"><p>იტვირთება შენი სამუშაო სივრცე…</p></div></main></div>
+<html lang="ka"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>სამუშაო სივრცე — SIVRCE</title><link rel="stylesheet" href="/static/product_v5.css"><link rel="stylesheet" href="/static/brand.css"><link rel="stylesheet" href="/static/operations.css"><script src="/static/operations.js" defer></script></head>
+<body class="new-v5 ws-body"><a class="skip-link" href="#mainwork">შინაარსზე გადასვლა</a>
+<div class="operations-shell">
+<aside class="operations-sidebar">
+  <a class="ws-brand" href="/">SIVRCE<span>.</span></a>
+  <div class="ws-org">
+    <span class="ws-org-mark" id="org-mark" aria-hidden="true">·</span>
+    <div class="ws-org-pick"><label for="organization">სივრცე</label><select id="organization"><option value="">პირადი სივრცე</option></select><small id="org-state"></small></div>
+  </div>
+  <nav aria-label="სამუშაო სივრცე" id="operations-nav">
+    <span class="ws-group">დღეს</span>
+    <button data-view="overview" aria-current="page"><i aria-hidden="true">◧</i>მიმოხილვა</button>
+    <button data-view="inbox"><i aria-hidden="true">✉</i>შეტყობინებები <span id="unread-count" class="ws-count"></span></button>
+    <span class="ws-group" data-group="hire">დაქირავება</span>
+    <button data-view="jobs" data-permission="hire_read"><i aria-hidden="true">⊞</i>ვაკანსიები და დრაფტები</button>
+    <button data-view="applications" data-permission="hire_read"><i aria-hidden="true">☰</i>კანდიდატები</button>
+    <span class="ws-group" data-group="develop">განვითარება</span>
+    <button data-view="develop" data-permission="develop_read"><i aria-hidden="true">◇</i>სწავლება და შესყიდვა</button>
+    <a class="ws-navlink" href="/workspace/develop" data-permission="develop_read" data-kind="company"><i aria-hidden="true">⇄</i>შეთავაზებების შედარება</a>
+    <button data-view="catalog" data-permission="catalog_read"><i aria-hidden="true">▤</i>კურსები და ჯგუფები</button>
+    <span class="ws-group" data-group="org">ორგანიზაცია</span>
+    <button data-view="team" data-permission="team"><i aria-hidden="true">◎</i>გუნდი და უფლებები</button>
+    <a class="ws-navlink" href="/workspace/company-profile" data-permission="team"><i aria-hidden="true">◳</i>საჯარო გვერდი</a>
+    <button data-view="admin" data-admin hidden><i aria-hidden="true">⚑</i>მოდერაცია</button>
+    <span class="ws-group">მე</span>
+    <button data-view="personal"><i aria-hidden="true">○</i>პროფილი და მონაცემები</button>
+    <a class="ws-navlink" href="/me"><i aria-hidden="true">→</i>ჩემი განაცხადები</a>
+  </nav>
+  <div class="operations-foot"><a href="/careers">კარიერა ↗</a><a href="/learn">კურსები ↗</a><a href="/account">ანგარიში და უსაფრთხოება ↗</a></div>
+</aside>
+<main id="mainwork" class="operations-main">
+  <header class="operations-header">
+    <div><p class="ws-kicker" id="context-name">SIVRCE</p><h1 id="view-title">მიმოხილვა</h1></div>
+    <div class="ws-quick" id="ws-quick"></div>
+  </header>
+  <div id="workspace-status" role="status" aria-live="polite"></div>
+  <div id="workspace-content" aria-busy="true"><p>იტვირთება შენი სამუშაო სივრცე…</p></div>
+</main></div>
 <dialog id="workspace-dialog" aria-labelledby="workspace-dialog-title"><header><h2 id="workspace-dialog-title"></h2><button id="close-workspace-dialog" aria-label="დახურვა">×</button></header><div id="workspace-dialog-content"></div></dialog>
 </body></html>
