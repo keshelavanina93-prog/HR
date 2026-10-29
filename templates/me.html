@@ -1,0 +1,49 @@
+<!doctype html><html lang="ka"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ჩემი სივრცე — SIVRCE</title><link rel="stylesheet" href="/static/product_v5.css"><link rel="stylesheet" href="/static/brand.css"><link rel="stylesheet" href="/static/worlds.css"><script src="/static/me.js" defer></script></head>
+<body class="new-v5 me-body"><a class="skip-link" href="#me-main">შინაარსზე გადასვლა</a>
+<header class="pe-top me-top"><a class="side-brand" href="/">SIVRCE<span>.</span></a><nav class="me-nav" aria-label="ჩემი სივრცე"><a href="#applications">განაცხადები</a><a href="#saved">შენახული</a><a href="#profile">პროფილი</a><a href="#privacy">მონაცემები</a></nav><a id="me-org-link" class="pe-preview" href="/workspace" hidden>ორგანიზაციის სივრცე ↗</a><a class="pe-preview" href="/careers">ვაკანსიები ↗</a></header>
+<main class="me-layout" id="me-main">
+  <p id="me-status" class="pe-status" role="status" aria-live="polite"></p>
+  <div id="me-signin" class="me-signin" hidden><h1>ჩემი სივრცე</h1><p>შენი განაცხადების, გასაუბრებებისა და შენახული ვაკანსიების სანახავად შედი ანგარიშში.</p><a class="st-primary" href="/start">შესვლა →</a></div>
+
+  <div id="me-app" hidden>
+    <section class="me-hero">
+      <div><span class="org-label">ჩემი სივრცე</span><h1 id="me-hello">გამარჯობა</h1></div>
+      <dl class="me-counts"><div><dt>აქტიური განაცხადი</dt><dd id="c-active">0</dd></div><div><dt>დაგეგმილი გასაუბრება</dt><dd id="c-interviews">0</dd></div><div><dt>შენახული ვაკანსია</dt><dd id="c-saved">0</dd></div></dl>
+    </section>
+
+    <section id="me-next" class="me-next" hidden></section>
+
+    <section id="applications" class="me-section"><div class="me-head"><h2>განაცხადები</h2><span class="pe-hint">თითოეული განაცხადის ეტაპს ცვლის კომპანია. ყოველ ცვლილებაზე შეტყობინებას მიიღებ.</span></div><div id="me-apps" class="me-apps"></div></section>
+
+    <div class="me-split">
+      <section id="saved" class="me-section"><div class="me-head"><h2>შენახული ვაკანსიები</h2></div><div id="me-saved" class="me-saved"></div></section>
+      <section class="me-section"><div class="me-head"><h2>შეტყობინებები <span id="me-unread" class="me-badge" hidden></span></h2></div><ul id="me-notes" class="me-notes"></ul></section>
+    </div>
+
+    <section class="me-section" id="interests-section" hidden><div class="me-head"><h2>კურსებზე ინტერესი</h2></div><div id="me-interests" class="me-saved"></div></section>
+
+    <section id="profile" class="me-section me-profile">
+      <div class="me-head"><h2>პროფესიული პროფილი</h2><span class="pe-hint">პროფილს ხედავს მხოლოდ ის კომპანია, რომელსაც განაცხადს უგზავნი.</span></div>
+      <div class="me-profile-grid">
+        <form id="profile-form" class="st-form">
+          <label>პროფესიული სათაური<input name="headline" maxlength="160" placeholder="მაგ.: მონაცემთა ანალიტიკოსი, 4 წელი ფინტექში"></label>
+          <label>ადგილმდებარეობა<input name="location" maxlength="160" placeholder="თბილისი / დისტანციური"></label>
+          <label>უნარები <small class="st-count">მძიმით გამოყავი</small><input name="skills" maxlength="2000" placeholder="SQL, Power BI, სტატისტიკა"></label>
+          <label>გამოცდილება<textarea name="experience" rows="5" maxlength="8000" placeholder="სად მუშაობდი, რას აკეთებდი და რა შედეგით."></textarea></label>
+          <div class="me-form-actions"><button class="st-primary" type="submit">შენახვა</button><span id="profile-saved" class="pe-hint"></span></div>
+        </form>
+        <aside class="me-score"><span class="org-label">სისრულე</span><b id="profile-score">0/4</b><ul id="profile-checks"></ul></aside>
+      </div>
+    </section>
+
+    <section id="privacy" class="me-section me-privacy">
+      <div class="me-head"><h2>ჩემი მონაცემები</h2></div>
+      <div class="me-privacy-grid">
+        <a class="st-action" href="/api/account/export" target="_blank" rel="noopener"><b>მონაცემების ნახვა →</b><span>ყველაფერი, რაც შენზე ინახება, JSON ფორმატში.</span></a>
+        <button type="button" class="st-action" id="delete-profile"><b>პროფილის გასუფთავება →</b><span>სათაური, უნარები და გამოცდილება წაიშლება. განაცხადები რჩება.</span></button>
+        <a class="st-action" href="/account"><b>ანგარიში და უსაფრთხოება →</b><span>პაროლი, ელფოსტის დადასტურება, წაშლის მოთხოვნა.</span></a>
+      </div>
+    </section>
+  </div>
+</main>
+</body></html>

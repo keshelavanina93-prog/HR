@@ -399,3 +399,95 @@
   .st-story-foot{display:none}
 }
 @media(max-width:560px){.st-two{grid-template-columns:1fr}.st-tabs{width:100%}.st-tabs button{flex:1}}
+
+/* ---------- Candidate space (/me) ---------- */
+.me-body{background:var(--paper)}
+.me-nav{display:flex;gap:18px;font-size:13px;font-weight:600;flex:1;justify-content:center}
+.me-nav a{color:var(--quiet)}
+.me-nav a:hover{color:var(--ink)}
+.me-layout{max-width:1180px;margin:0 auto;padding:clamp(20px,4vw,48px) clamp(16px,4vw,40px) 80px}
+.me-signin{max-width:520px;margin:10vh auto;display:grid;gap:16px;justify-items:start}
+.me-signin h1{font-size:44px}
+.me-hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:end;padding-bottom:28px;border-bottom:2px solid var(--ink)}
+.me-hero h1{font-size:clamp(38px,5vw,72px);line-height:1;margin:4px 0 0}
+.me-counts{display:flex;gap:0;margin:0}
+.me-counts div{padding:0 24px;border-left:1px solid var(--line)}
+.me-counts dt{font-size:11.5px;color:var(--quiet);max-width:110px;line-height:1.35}
+.me-counts dd{margin:6px 0 0;font-weight:800;font-stretch:75%;font-variation-settings:'wdth' 75;font-size:44px;line-height:1}
+.me-next{margin-top:28px;background:var(--ink);color:var(--porcelain);padding:clamp(22px,3vw,36px);display:grid;gap:10px;justify-items:start;
+  clip-path:polygon(0 0,calc(100% - 30px) 0,100% 30px,100% 100%,0 100%)}
+.me-next .org-label{color:#ffffff8c;margin:0}
+.me-next h2{font-size:clamp(24px,2.6vw,38px)!important;color:#fff;margin:0}
+.me-next p{color:#ffffffbf;font-size:14px}
+.me-next .st-primary{background:#fff;color:var(--ink);margin-top:6px}
+.me-section{padding-top:clamp(40px,5vw,64px)}
+.me-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 24px;margin-bottom:18px}
+.me-head h2{font-size:clamp(24px,2.4vw,34px)!important;margin:0}
+.me-apps{display:grid;gap:14px}
+.me-app{background:#fff;padding:clamp(18px,2.5vw,28px);box-shadow:inset 4px 0 0 var(--org-accent);display:grid;gap:16px}
+.me-app.closed{opacity:.78}
+.me-app-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+.me-company{font-size:12px;font-weight:700;color:var(--org-accent)}
+.me-app h3{font-size:22px;font-weight:800;font-stretch:85%;font-variation-settings:'wdth' 85;margin:4px 0}
+.me-app h3 a:hover{color:var(--cobalt)}
+.me-app small{font-size:12px;color:var(--quiet)}
+.me-status{font-size:12px;font-weight:700;padding:6px 10px;background:var(--paper2);white-space:nowrap}
+.me-status.s-interview,.me-status.s-offer{background:#E8EBFB;color:var(--cobalt)}
+.me-status.s-hired{background:var(--cobalt);color:#fff}
+.me-status.s-rejected{background:#F1E7EA;color:var(--oxblood)}
+.me-track{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}
+.me-track li{border-top:4px solid var(--line);padding-top:8px;font-size:12px;color:var(--soft-ink)}
+.me-track li.done{border-top-color:var(--ink);color:var(--ink)}
+.me-track li.current{border-top-color:var(--org-accent);color:var(--ink);font-weight:700}
+.me-track li.stopped{border-top-color:var(--oxblood);color:var(--oxblood);font-weight:700}
+.me-track.is-closed li:not(.done):not(.stopped){opacity:.45}
+.me-now{font-size:15px;line-height:1.6}
+.me-wait{font-size:13px;background:var(--paper2);padding:10px 14px;line-height:1.6}
+.me-interviews{display:grid;gap:10px}
+.me-interview{border:1px solid var(--line);padding:14px 16px;display:grid;gap:4px;font-size:13.5px}
+.me-interview.upcoming{border-color:var(--cobalt);box-shadow:inset 3px 0 0 var(--cobalt)}
+.me-interview span{color:var(--quiet)}
+.me-app-actions{display:flex;flex-wrap:wrap;gap:18px;padding-top:12px;border-top:1px solid var(--line)}
+.me-link{font-size:13px;font-weight:600;background:none;border:0;padding:0;cursor:pointer;color:var(--ink);border-bottom:1px solid var(--line)}
+.me-link:hover{border-color:var(--ink)}
+.me-link.danger{color:var(--oxblood);margin-left:auto}
+.me-empty{background:#fff;padding:28px;display:grid;gap:14px;justify-items:start}
+.me-split{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(20px,4vw,48px)}
+.me-saved{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.me-saved-card{background:#fff;padding:18px;display:grid;gap:4px;box-shadow:inset 0 3px 0 var(--org-accent,var(--ink))}
+.me-saved-card:hover b{color:var(--cobalt)}
+.me-saved-card span,.me-saved-card small{font-size:12px;color:var(--quiet)}
+.me-saved-card b{font-size:16px}
+.me-saved-card.closed{opacity:.6}
+.me-badge{display:inline-block;background:var(--cobalt);color:#fff;font-size:12px;padding:2px 8px;vertical-align:middle;font-stretch:100%}
+.me-notes{list-style:none;margin:0;padding:0;background:#fff}
+.me-notes li{display:grid;gap:2px;padding:14px 18px;border-bottom:1px solid var(--line);font-size:13.5px}
+.me-notes li.unread{box-shadow:inset 3px 0 0 var(--cobalt)}
+.me-notes span{color:var(--quiet)}
+.me-notes small{font-size:11px;color:var(--soft-ink)}
+.me-profile-grid{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:clamp(20px,4vw,48px);align-items:start}
+.me-profile .st-form{max-width:none;background:#fff;padding:clamp(18px,2.5vw,28px)}
+.me-form-actions{display:flex;gap:16px;align-items:center}
+.me-score{background:var(--ink);color:var(--porcelain);padding:22px}
+.me-score .org-label{color:#ffffff8c}
+.me-score b{font-size:40px;font-weight:800;display:block;margin-bottom:10px}
+.me-score ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:13px;color:#ffffffa6}
+.me-score li.done{color:#fff}
+.me-privacy-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.me-privacy-grid button.st-action{font:inherit;text-align:left;border:0;cursor:pointer;color:var(--ink)}
+@media(max-width:900px){
+  .me-hero,.me-split,.me-profile-grid{grid-template-columns:1fr}
+  .me-counts div:first-child{padding-left:0;border-left:0}
+  .me-privacy-grid{grid-template-columns:1fr}
+  .me-nav{display:none}
+}
+@media(max-width:560px){
+  .me-counts dd{font-size:32px}
+  .me-counts div{padding:0 12px}
+  .me-track span{font-size:10.5px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .me-app-head{flex-direction:column-reverse;gap:8px}
+  .me-link.danger{margin-left:0}
+}
+
+/* Author display rules must not defeat the hidden attribute on these screens. */
+.me-body [hidden],.st-body [hidden],.profile-editor [hidden]{display:none!important}

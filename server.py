@@ -801,6 +801,8 @@ from features.routes import router as platform_router
 app.include_router(platform_router)
 from features.showcase import router as showcase_router
 app.include_router(showcase_router)
+from features.candidate import router as candidate_router
+app.include_router(candidate_router)
 from features.middleware import install_middleware
 install_middleware(app)
 
