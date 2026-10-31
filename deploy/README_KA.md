@@ -64,6 +64,14 @@ PROJECT_ID=sivrce-beta-YYMMDD bash deploy/gcp/credentials.sh
 - **Google-ით შესვლა** — `GOOGLE_CLIENT_ID`. Google Cloud Console → APIs & Services → Credentials → OAuth client ID (Web), Authorized JavaScript origin: `https://beta.ncore.space`.
 - **ელფოსტა** — `SMTP_HOST`, `SMTP_FROM`, `SMTP_USER`, `SMTP_PASSWORD`. მითითებისას ავტომატურად ჩაირთვება გამგზავნი (`worker`). მანამდე წერილები რიგში ინახება და არ იგზავნება.
 
+## Google-ით შესვლა და ელფოსტა (სკრიპტით)
+
+```bash
+PROJECT_ID=sivrce-beta-YYMMDD bash deploy/gcp/configure.sh google   # ითხოვს Web client ID-ს და ამოწმებს
+PROJECT_ID=sivrce-beta-YYMMDD bash deploy/gcp/configure.sh mail     # ითხოვს App Password-ს და აგზავნის სატესტო წერილს
+```
+ელფოსტა იგზავნება Google Workspace-ის SMTP-ით (`smtp.gmail.com:587`, STARTTLS) ანგარიშიდან `connect@nyxcore.space`. App Password: <https://myaccount.google.com/apppasswords> (საჭიროა 2-ნაბიჯიანი დადასტურება).
+
 ## სარეზერვო ასლები
 
 ყოველ ღამე 03:15 UTC: PostgreSQL dump + ფოტოები + CV-ები → `gs://<PROJECT_ID>-backups/<თარიღი>/`. Bucket პირადია, ასლები 30 დღეში იშლება. ხელით: `sudo sivrce-backup`.
