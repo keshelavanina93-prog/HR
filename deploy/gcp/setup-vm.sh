@@ -36,6 +36,7 @@ DEMO_PASSWORD=$DEMO_PASSWORD
 ADMIN_EMAIL=$ADMIN_EMAIL
 ADMIN_PASSWORD=$ADMIN_PASSWORD
 GOOGLE_CLIENT_ID=
+ELEVENLABS_API_KEY=
 SMTP_HOST=
 SMTP_PORT=587
 SMTP_STARTTLS=1
@@ -55,11 +56,22 @@ docker image prune -f >/dev/null
 install -m 0755 deploy/beta/backup.sh /usr/local/bin/sivrce-backup
 echo "15 3 * * * root /usr/local/bin/sivrce-backup >> /var/log/sivrce-backup.log 2>&1" > /etc/cron.d/sivrce-backup
 
+# Voices: index the starter directory once, then refresh feeds hourly and run queued transcriptions.
+DC="docker compose -f $APP/deploy/beta/compose.yml --env-file $ENVF"
+cat > /etc/cron.d/sivrce-voices <<EOF
+7 * * * * root cd $APP && $DC exec -T web python -m features.voices_cli refresh >> /var/log/sivrce-voices.log 2>&1
+*/15 * * * * root cd $APP && $DC exec -T web python -m features.voices_cli transcribe >> /var/log/sivrce-voices.log 2>&1
+EOF
+
 echo "→ შემოწმება"
 for i in $(seq 1 40); do
   if docker compose -f deploy/beta/compose.yml --env-file "$ENVF" exec -T web python -c "import urllib.request;urllib.request.urlopen('http://127.0.0.1:8000/ready',timeout=3)" </dev/null 2>/dev/null; then OK=1; break; fi
   sleep 3
 done
+if [[ "${OK:-0}" == 1 ]]; then
+  echo "→ Voices: ქართული შოუების ინდექსი"
+  docker compose -f deploy/beta/compose.yml --env-file "$ENVF" exec -T web python -m features.voices_cli seed </dev/null 2>&1 | grep -c title | sed 's/^/   შოუ: /'
+fi
 [[ "${OK:-0}" == 1 ]] && echo "✓ აპლიკაცია მუშაობს" || { echo "✗ აპლიკაცია არ პასუხობს. ლოგები:"; docker compose -f deploy/beta/compose.yml --env-file "$ENVF" logs --tail=60 web migrate; exit 1; }
 
 if [[ $FIRST == 1 ]]; then cat <<EOF

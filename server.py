@@ -494,8 +494,8 @@ def exchange(request:Request,db:Session=Depends(sessdb)):
 @app.get('/voices',response_class=HTMLResponse)
 def voices_page(request:Request,db:Session=Depends(sessdb)):
  from features.showcase import episode_covers
- episodes=[episode_dict(ep) for ep in db.scalars(select(Episode).where(Episode.status=='published').order_by(Episode.id))]
- return templates.TemplateResponse(request,'index.html',{'page':'voices','episodes':episodes,'covers':episode_covers(db)})
+ from features.voices import index_context
+ return templates.TemplateResponse(request,'index.html',{**index_context(db),'covers':episode_covers(db)})
 @app.get('/studio',response_class=HTMLResponse)
 def studio_page(request:Request):return templates.TemplateResponse(request,'index.html',{'page':'studio'})
 @app.get('/standards',response_class=HTMLResponse)
@@ -809,6 +809,8 @@ from features.candidate import router as candidate_router
 app.include_router(candidate_router)
 from features.develop import router as develop_router
 app.include_router(develop_router)
+from features.voices import router as voices_router
+app.include_router(voices_router)
 from features.middleware import install_middleware
 install_middleware(app)
 

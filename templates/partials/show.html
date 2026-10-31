@@ -1,0 +1,35 @@
+{% macro art(item, cls='') -%}
+{% if item.artwork %}<img class="vx-art {{cls}}" src="{{item.artwork}}" alt="" width="600" height="600">{% else %}<div class="vx-art vx-art-fb {{cls}}" aria-hidden="true"><span>V<b>.</b></span></div>{% endif %}
+{%- endmacro %}
+<div class="vx">
+<section class="frame vx-show-hero">
+  <div class="vx-show-art">{{ art(show, 'vx-art-big') }}</div>
+  <div class="vx-show-copy">
+    <a class="back-link" href="/voices">← Voices</a>
+    <span class="org-label">{{show.topic_label}}{% if show.claimed %} · <b class="vx-verified">✓ დადასტურებული გამომცემელი</b>{% endif %}</span>
+    <h1>{{show.title}}</h1>
+    {% if show.author %}<p class="vx-show-author">{{show.author}}</p>{% endif %}
+    <p class="vx-show-desc">{{show.description[:700]}}{% if show.description|length > 700 %}…{% endif %}</p>
+    <dl class="vx-show-facts"><div><dt>ეპიზოდი</dt><dd>{{show.episodes}}</dd></div>{% if show.latest %}<div><dt>ბოლო</dt><dd>{{show.latest}}</dd></div>{% endif %}{% if publisher_org %}<div><dt>ორგანიზაცია</dt><dd><a href="/organizations/{{publisher_org.slug}}">{{publisher_org.name}} ↗</a></dd></div>{% endif %}</dl>
+    <div class="vx-show-links">
+      {% if show.site_url %}<a class="quiet-link" href="{{show.site_url}}" target="_blank" rel="noopener noreferrer">საიტი <span>↗</span></a>{% endif %}
+      {% if show.apple_id %}<a class="quiet-link" href="https://podcasts.apple.com/ge/podcast/id{{show.apple_id}}" target="_blank" rel="noopener noreferrer">Apple Podcasts <span>↗</span></a>{% endif %}
+      <a class="quiet-link" href="{{show.feed_url}}" target="_blank" rel="noopener noreferrer">RSS <span>↗</span></a>
+    </div>
+    {% if not show.claimed %}<p class="vx-claim">ეს შენი შოუა? <a href="/start">დაადასტურე</a> და მიიღე ქართული ტრანსკრიპტი, ძებნა და სტატისტიკა.</p>{% endif %}
+  </div>
+</section>
+
+<section class="frame vx-ep-list">
+  <div class="vx-lane-head"><h2>ეპიზოდები</h2><span>{{episodes|length}}</span></div>
+  <ol class="vx-list">
+  {% for ep in episodes %}
+    <li class="vx-row">
+      <button type="button" class="vx-play vx-play-row" data-play="{{ep.id}}" data-url="{{ep.audio}}" data-title="{{ep.title}}" data-show="{{ep.show}}" data-art="{{ep.artwork}}" data-href="/voices/ep/{{ep.id}}" data-duration="{{ep.duration_sec}}" aria-label="მოსმენა: {{ep.title}}"><span class="vx-ico"></span></button>
+      <div class="vx-row-body"><a href="/voices/ep/{{ep.id}}"><b>{{ep.title}}</b></a><span>{{ep.date}}{% if ep.duration %} · {{ep.duration}}{% endif %}{% if ep.brief %} · კონსპექტი{% endif %}{% if ep.has_transcript and ep.claimed %} · ტრანსკრიპტი{% endif %}</span><p>{{ep.description[:220]}}{% if ep.description|length > 220 %}…{% endif %}</p></div>
+    </li>
+  {% endfor %}
+  </ol>
+</section>
+</div>
+<script src="/static/player.js" defer></script>

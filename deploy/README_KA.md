@@ -72,6 +72,14 @@ PROJECT_ID=sivrce-beta-YYMMDD bash deploy/gcp/configure.sh mail     # ითხ�
 ```
 ელფოსტა იგზავნება Google Workspace-ის SMTP-ით (`smtp.gmail.com:587`, STARTTLS) ანგარიშიდან `connect@nyxcore.space`. App Password: <https://myaccount.google.com/apppasswords> (საჭიროა 2-ნაბიჯიანი დადასტურება).
 
+## Voices — ქართული პოდკასტების ინდექსი
+
+- გაშვებისას სერვერი ერთხელ აინდექსებს საწყის სიას (`features/voices_starter.py`, 21 ქართული შოუ) და ყოველ საათზე აახლებს ფიდებს (`/etc/cron.d/sivrce-voices`).
+- ახალი შოუს დამატება მოდერატორის ანგარიშით: `POST /api/admin/shows {"feed_url": "...", "topic": "work"}`. თემები: `work, science, society, culture, growth, other`.
+- ქართული კონსპექტი, მთავარი აზრები და თავები: `PATCH /api/admin/episodes/{id}`.
+- ტრანსკრიფცია (ElevenLabs Scribe v2, ქართული — მაღალი სიზუსტის ენა): `.env`-ში `ELEVENLABS_API_KEY=...`, შემდეგ `POST /api/admin/episodes/{id}/transcribe`. ფონური პროცესი 15 წუთში ერთხელ ამუშავებს რიგს. სრული ტრანსკრიპტი საჯაროდ ჩანს მხოლოდ გამომცემლის მიერ დადასტურებულ შოუებზე; დანარჩენებზე მხოლოდ ძებნას კვებავს.
+- გამომცემლის დადასტურება: მფლობელი `POST /api/shows/{id}/claim`, მოდერატორი `PATCH /api/admin/shows/{id} {"claim": "approve"}`.
+
 ## სარეზერვო ასლები
 
 ყოველ ღამე 03:15 UTC: PostgreSQL dump + ფოტოები + CV-ები → `gs://<PROJECT_ID>-backups/<თარიღი>/`. Bucket პირადია, ასლები 30 დღეში იშლება. ხელით: `sudo sivrce-backup`.

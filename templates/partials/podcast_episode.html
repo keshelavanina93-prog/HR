@@ -1,0 +1,73 @@
+{% macro art(item, cls='') -%}
+{% if item.artwork %}<img class="vx-art {{cls}}" src="{{item.artwork}}" alt="" width="600" height="600">{% else %}<div class="vx-art vx-art-fb {{cls}}" aria-hidden="true"><span>V<b>.</b></span></div>{% endif %}
+{%- endmacro %}
+<div class="vx">
+<section class="frame vx-ep">
+  <aside class="vx-ep-side">
+    <div class="vx-ep-artwrap">{{ art(ep, 'vx-art-big') }}
+      <button type="button" class="vx-play vx-play-big" data-play="{{ep.id}}" data-url="{{ep.audio}}" data-title="{{ep.title}}" data-show="{{ep.show}}" data-art="{{ep.artwork}}" data-href="/voices/ep/{{ep.id}}" data-duration="{{ep.duration_sec}}" aria-label="მოსმენა"><span class="vx-ico"></span></button>
+    </div>
+    <div class="vx-ep-facts">
+      <a class="vx-ep-showlink" href="/voices/show/{{show.slug}}">{{ art(show, 'vx-art-xs') }}<span><b>{{show.title}}</b><small>{{show.topic_label}}{% if show.claimed %} · ✓{% endif %}</small></span></a>
+      <dl><div><dt>გამოქვეყნდა</dt><dd>{{ep.date}}</dd></div>{% if ep.duration %}<div><dt>ხანგრძლივობა</dt><dd>{{ep.duration}}</dd></div>{% endif %}{% if ep.number %}<div><dt>ეპიზოდი</dt><dd>№{{ep.number}}</dd></div>{% endif %}</dl>
+      <div class="vx-ep-links">{% if ep.link and ep.link.startswith('https://') %}<a href="{{ep.link}}" target="_blank" rel="noopener noreferrer">პირველწყარო ↗</a>{% endif %}{% if show.apple_id %}<a href="https://podcasts.apple.com/ge/podcast/id{{show.apple_id}}" target="_blank" rel="noopener noreferrer">Apple Podcasts ↗</a>{% endif %}<a href="{{ep.audio}}" target="_blank" rel="noopener noreferrer">აუდიო ფაილი ↗</a></div>
+      <button type="button" class="vx-share" data-share="{{ep.title}}">გაზიარება</button>
+    </div>
+  </aside>
+
+  <article class="vx-ep-main">
+    <a class="back-link" href="/voices">← Voices</a>
+    <a class="vx-hero-show" href="/voices/show/{{show.slug}}">{{show.title}}</a>
+    <h1>{{ep.title}}</h1>
+
+    {% if ep.brief or ep.key_points or ep.chapters %}
+    <section class="vx-brief">
+      <span class="org-label">SIVRCE-ის ქართული კონსპექტი</span>
+      {% if ep.key_points %}<ul class="vx-points">{% for p in ep.key_points %}<li>{{p}}</li>{% endfor %}</ul>{% endif %}
+      {% if ep.brief %}{% for para in ep.brief.split('\n\n') %}<p>{{para}}</p>{% endfor %}{% endif %}
+      {% if ep.chapters %}
+      <ol class="vx-chapters">{% for c in ep.chapters %}<li><button type="button" data-seek="{{c.t}}" class="vx-chapter"><time>{{'%d:%02d'|format(c.t//60, c.t%60)}}</time><span>{{c.title}}</span></button></li>{% endfor %}</ol>
+      <p class="pe-hint">თავზე დაჭერით ფლეერი ამ წუთზე გადადის.</p>
+      {% endif %}
+    </section>
+    {% else %}
+    <section class="vx-brief vx-brief-pending">
+      <span class="org-label">SIVRCE-ის ქართული კონსპექტი</span>
+      <p>ამ ეპიზოდს კონსპექტი ჯერ არ აქვს. რედაქცია ამატებს მთავარ აზრებს და თავებს ყველაზე მოსმენად ეპიზოდებზე.</p>
+    </section>
+    {% endif %}
+
+    <section class="vx-desc">
+      <span class="org-label">გამომცემლის აღწერა</span>
+      {% for para in ep.description.split('\n\n') if para.strip() %}<p>{{para}}</p>{% else %}<p class="pe-hint">აღწერა არ არის.</p>{% endfor %}
+    </section>
+
+    {% if transcript %}
+    <section class="vx-transcript">
+      <details><summary><span class="org-label">ტრანსკრიპტი</span> ქართული ტრანსკრიპტი — გამომცემლის თანხმობით</summary><div class="vx-transcript-body">{% for para in transcript.split('\n') if para.strip() %}<p>{{para}}</p>{% endfor %}</div></details>
+    </section>
+    {% elif ep.has_transcript %}
+    <p class="pe-hint vx-transcript-note">ამ ეპიზოდის ტექსტი ძებნაშია ჩართული. სრული ტრანსკრიპტი ქვეყნდება მას შემდეგ, რაც გამომცემელი შოუს დაადასტურებს.</p>
+    {% endif %}
+
+    {% if related_jobs or related_courses %}
+    <section class="vx-related">
+      <span class="org-label">ამ თემაზე SIVRCE-ზე</span>
+      <div class="related-grid">
+        {% for j in related_jobs %}<a href="/careers/{{j.id}}" class="related-card"><span>ვაკანსია · {{j.company}}</span><b>{{j.title}}</b><small>{{'{:,}'.format(j.salary_min)}}–{{'{:,}'.format(j.salary_max)}} ₾</small></a>{% endfor %}
+        {% for c in related_courses %}<a href="/learn/{{c.id}}" class="related-card"><span>კურსი · {{c.category}}</span><b>{{c.title}}</b><small>{{c.price}} ₾ · {{c.duration}}</small></a>{% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    {% if more %}
+    <section class="vx-more">
+      <div class="vx-lane-head"><h2>კიდევ {{show.title}}-დან</h2></div>
+      <ol class="vx-list">{% for m in more %}<li class="vx-row"><button type="button" class="vx-play vx-play-row" data-play="{{m.id}}" data-url="{{m.audio}}" data-title="{{m.title}}" data-show="{{m.show}}" data-art="{{m.artwork}}" data-href="/voices/ep/{{m.id}}" data-duration="{{m.duration_sec}}" aria-label="მოსმენა: {{m.title}}"><span class="vx-ico"></span></button><div class="vx-row-body"><a href="/voices/ep/{{m.id}}"><b>{{m.title}}</b></a><span>{{m.date}}{% if m.duration %} · {{m.duration}}{% endif %}</span></div></li>{% endfor %}</ol>
+    </section>
+    {% endif %}
+  </article>
+</section>
+</div>
+<script src="/static/player.js" defer></script>
+<script>document.addEventListener('click',async e=>{const b=e.target.closest('[data-share]');if(!b)return;const data={title:b.dataset.share,url:location.href};try{if(navigator.share)await navigator.share(data);else{await navigator.clipboard.writeText(location.href);b.textContent='ბმული დაკოპირდა'}}catch{}});</script>
