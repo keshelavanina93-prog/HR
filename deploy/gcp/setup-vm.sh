@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Runs ON the VM as root (deploy.sh pipes it over SSH). Idempotent.
 set -euo pipefail
+# Everything sits in main() so bash reads the whole script before any command can consume stdin.
+main(){
 APP=/opt/sivrce
 ENVF="$APP/deploy/beta/.env"
 
@@ -55,7 +57,7 @@ echo "15 3 * * * root /usr/local/bin/sivrce-backup >> /var/log/sivrce-backup.log
 
 echo "→ შემოწმება"
 for i in $(seq 1 40); do
-  if docker compose -f deploy/beta/compose.yml --env-file "$ENVF" exec -T web python -c "import urllib.request;urllib.request.urlopen('http://127.0.0.1:8000/ready',timeout=3)" 2>/dev/null; then OK=1; break; fi
+  if docker compose -f deploy/beta/compose.yml --env-file "$ENVF" exec -T web python -c "import urllib.request;urllib.request.urlopen('http://127.0.0.1:8000/ready',timeout=3)" </dev/null 2>/dev/null; then OK=1; break; fi
   sleep 3
 done
 [[ "${OK:-0}" == 1 ]] && echo "✓ აპლიკაცია მუშაობს" || { echo "✗ აპლიკაცია არ პასუხობს. ლოგები:"; docker compose -f deploy/beta/compose.yml --env-file "$ENVF" logs --tail=60 web migrate; exit 1; }
@@ -73,3 +75,5 @@ if [[ $FIRST == 1 ]]; then cat <<EOF
 ════════════════════════════════════════════════════════════
 EOF
 fi
+}
+main </dev/null
