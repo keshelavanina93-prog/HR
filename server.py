@@ -142,20 +142,22 @@ def slug(text):
  return (s or 'org')+'-'+secrets.token_hex(3)
 
 def seed():
- if os.getenv('SEED_DEMO','0')!='1':
-  email=os.getenv('ADMIN_EMAIL','').strip().lower()
-  password=os.getenv('ADMIN_PASSWORD','')
-  if email and len(password)>=14:
-   with Local() as db:
-    if not db.scalar(select(User).where(User.email==email)):
-     db.add(User(name='SIVRCE Admin',email=email,pw_hash=PW.hash(password),admin=True));db.commit()
-  return
+ # The operator's moderator account is created in every mode, including the closed beta.
+ email=os.getenv('ADMIN_EMAIL','').strip().lower()
+ password=os.getenv('ADMIN_PASSWORD','')
+ if email and len(password)>=14:
+  with Local() as db:
+   if not db.scalar(select(User).where(User.email==email)):
+    db.add(User(name='SIVRCE Admin',email=email,pw_hash=PW.hash(password),admin=True));db.commit()
+ if os.getenv('SEED_DEMO','0')!='1':return
+ # Internet-facing demos must override the published default password.
+ demo_password=os.getenv('DEMO_PASSWORD') or 'DemoOnly!234'
  with Local() as db:
-  if db.scalar(select(User.id).limit(1)):return
+  if db.scalar(select(User.id).where(User.email.like('%@demo.sivrce.ge')).limit(1)):return
   users=[('დემო კომპანია','company@demo.sivrce.ge'),('დემო მომწოდებელი','provider@demo.sivrce.ge'),('დემო კანდიდატი','candidate@demo.sivrce.ge'),('SIVRCE მოდერატორი','admin@demo.sivrce.ge')]
   objs=[]
   for name,email in users:
-   u=User(name=name,email=email,pw_hash=PW.hash('DemoOnly!234'),admin=email.startswith('admin@'));db.add(u);objs.append(u)
+   u=User(name=name,email=email,pw_hash=PW.hash(demo_password),admin=email.startswith('admin@'));db.add(u);objs.append(u)
   db.flush()
   company=Organization(name='Atelier Collective · DEMO',slug='atelier-demo',kind='company',description='საჩვენებელი კომპანია, შექმნილი პროდუქტის ფუნქციების გასატესტად.',location='თბილისი',verified=True,demo=True)
   provider=Organization(name='Practice Institute · DEMO',slug='practice-demo',kind='provider',description='საჩვენებელი სასწავლო ორგანიზაცია.',location='თბილისი',verified=True,demo=True)
