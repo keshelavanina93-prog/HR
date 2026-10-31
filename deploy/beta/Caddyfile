@@ -1,0 +1,17 @@
+# Certificates come from Let's Encrypt automatically once DNS points at this server.
+{$BETA_DOMAIN} {
+	encode zstd gzip
+
+	# Closed beta: one shared login for the whole site, API included.
+	basic_auth {
+		{$BETA_USER} {$BETA_PASSWORD_HASH}
+	}
+
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Robots-Tag "noindex, nofollow"
+		-Server
+	}
+
+	reverse_proxy web:8000
+}

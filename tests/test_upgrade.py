@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import select
-os.environ['DATABASE_URL']='sqlite:///'+str(Path(__file__).resolve().parent/'integration-test.db')
+os.environ['DATABASE_URL']=os.environ.get('TEST_DATABASE_URL','sqlite:///'+str(Path(__file__).resolve().parent/'integration-test.db'))
 os.environ['SEED_DEMO']='1'
 sys.path.insert(0,str(Path(__file__).resolve().parent.parent))
 import server
@@ -129,3 +129,48 @@ def test_provider_confirmed_interest_and_job_closure():
   assert candidate.get('/api/my-course-interests').json()[0]['status']=='confirmed'
   assert employer.post('/api/jobs/1/close').status_code==200
   assert not any(j['id']==1 for j in candidate.get('/api/jobs').json())
+
+
+def test_v5_business_experience_and_static_assets():
+ with TestClient(app) as c:
+  business=c.get('/business')
+  assert business.status_code==200
+  assert 'ადამიანებთან<br>დაკავშირებული საქმე' in business.text
+  assert '/business/experience' in business.text
+  assert 'საჩვენებელი მონაცემები' in business.text
+  experience=c.get('/business/experience')
+  assert experience.status_code==200
+  for text in ('კანდიდატები','ვაკანსიის შექმნა','სწავლება და შესყიდვა','შედარება','საჩვენებელი მონაცემები'):
+   assert text in experience.text
+  assert 'workbench_v5.js' in experience.text
+  assert c.get('/static/product_v5.css').status_code==200
+  js=c.get('/static/workbench_v5.js')
+  assert js.status_code==200
+  assert 'function renderPipeline' in js.text
+  assert 'function jobQuality' in js.text
+  assert 'function renderCompare' in js.text
+  assert c.get('/business/overview').status_code==200
+
+
+def test_v5_public_demo_does_not_create_private_data():
+ with TestClient(app) as c:
+  before=c.get('/api/jobs').json()
+  assert c.get('/business/experience').status_code==200
+  assert c.get('/api/jobs').json()==before
+  # A public visitor must not publish or alter a vacancy by direct API access.
+  response=c.post('/api/jobs',json={})
+  assert response.status_code==401
+
+
+def test_v5_connected_company_onboarding_page():
+ with TestClient(app) as c:
+  page=c.get('/start')
+  assert page.status_code==200
+  assert 'შედი ან შექმენი ანგარიში' in page.text
+  assert 'გადამოწმების მოთხოვნა' in page.text and 'data-role="provider"' in page.text
+  assert '/static/onboarding_v5.js' in page.text
+  js=c.get('/static/onboarding_v5.js')
+  assert js.status_code==200
+  assert '/api/auth/google/config' in js.text
+  assert '/api/organizations/' in js.text
+  assert '/api/auth/register' in js.text

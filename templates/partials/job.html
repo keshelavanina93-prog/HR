@@ -1,0 +1,62 @@
+{% set w = world %}{% set s = w.story %}
+<div class="org-world job-world" style="--org-accent: {{w.accent}}">
+<section class="job-hero">
+  <div class="frame job-hero-inner">
+    <div>
+      <a href="/careers" class="back-link">← ყველა ვაკანსია</a>
+      <a class="job-org" href="/organizations/{{job.slug}}"><span class="job-org-mark" aria-hidden="true">{{job.company[:1]}}</span><span><b>{{job.company}}</b><small>{% if job.demo %}DEMO · საჩვენებელი ორგანიზაცია{% else %}● გადამოწმებული ორგანიზაცია{% endif %} · კომპანიის სამყარო ↗</small></span></a>
+      <h1>{{job.title}}</h1>
+      <ul class="job-chips"><li>{{job.department}}</li><li>{{job.location}}</li><li>{{job.work_mode}}</li><li>{{job.employment}}</li></ul>
+    </div>
+    <div class="job-pay-panel">
+      <span class="org-label">ანაზღაურება თვეში</span>
+      <div class="pay-line"><b>{{'{:,}'.format(pay.gross[0])}}–{{'{:,}'.format(pay.gross[1])}} ₾</b><span>დარიცხული{% if pay.stated=='gross' %} · მითითებული{% endif %}</span></div>
+      <div class="pay-line"><b>{{'{:,}'.format(pay.net[0])}}–{{'{:,}'.format(pay.net[1])}} ₾</b><span>ხელზე{% if pay.stated=='net' %} · მითითებული{% endif %}</span></div>
+      <p>{{'ხელზე ასაღები' if pay.stated=='gross' else 'დარიცხული'}} თანხა სავარაუდოა: 2% საპენსიო და 20% საშემოსავლო, შეღავათების გარეშე.</p>
+    </div>
+  </div>
+</section>
+
+<section class="frame job-layout">
+  <article class="job-main">
+    <div class="job-block job-purpose"><span class="org-label">01 · რატომ არსებობს ეს როლი</span><p class="org-lead">{{job.purpose}}</p></div>
+    <div class="job-block"><span class="org-label">02 · რას გააკეთებ</span><ul class="job-list">{% for line in job.responsibilities.split('\n') if line.strip() %}<li>{{line}}</li>{% endfor %}</ul></div>
+    <div class="job-block"><span class="org-label">03 · რა გჭირდება</span><ul class="job-list">{% for line in job.requirements.split('\n') if line.strip() %}<li>{{line}}</li>{% endfor %}</ul></div>
+    {% if job.benefits %}<div class="job-block"><span class="org-label">04 · რას იღებ</span><ul class="job-list job-benefits">{% for line in job.benefits.split('\n') if line.strip() %}<li>{{line}}</li>{% endfor %}</ul></div>{% endif %}
+
+    <div class="job-block"><span class="org-label">შერჩევის გზა</span>
+      <ol class="job-steps">{% for step in steps %}<li><span>{{'%02d'|format(loop.index)}}</span><b>{{step}}</b></li>{% endfor %}</ol>
+      {% if s and s.hiring_promise %}<p class="job-promise"><b>კომპანიის დაპირება:</b> {{s.hiring_promise}}</p>{% endif %}
+    </div>
+
+    {% if s %}
+    <div class="job-block job-inside">
+      <span class="org-label">როგორ მუშაობენ {{job.company}}-ში</span>
+      <div class="job-inside-grid">
+        {% if w.cover %}<figure class="job-inside-photo"><img src="{{w.cover.url}}" alt="{{w.cover.alt}}" loading="lazy" width="{{w.cover.width}}" height="{{w.cover.height}}"><figcaption>ფოტო: {{w.cover.credit}}</figcaption></figure>{% endif %}
+        {% if w.day %}<ol class="job-day">{% for e in w.day[:3] %}<li><time>{{e.time}}</time><span>{{e.title}}</span></li>{% endfor %}</ol>{% endif %}
+        {% if w.hard_parts %}<div class="job-hard"><b>რა არის რთული</b><ul>{% for l in w.hard_parts[:3] %}<li>{{l}}</li>{% endfor %}</ul></div>{% endif %}
+      </div>
+      <a class="quiet-link" href="/organizations/{{job.slug}}">ნახე კომპანიის სრული გვერდი <span>↗</span></a>
+    </div>
+    {% endif %}
+  </article>
+
+  <aside class="job-aside">
+    <div class="apply-card job-apply">
+      <span class="org-label">განაცხადი</span>
+      {% if expired %}
+      <p class="job-closed">განაცხადის მიღება დასრულდა {{job.deadline}}-ს.</p>
+      {% else %}
+      <dl class="job-apply-facts"><div><dt>ვადა</dt><dd>{{job.deadline}}</dd></div><div><dt>ეტაპები</dt><dd>{{steps|length}}</dd></div></dl>
+      <button class="primary-btn full" data-modal="apply" data-job="{{job.id}}">განაცხადის გაგზავნა ↗</button>
+      <button type="button" class="secondary-btn full save-job" data-save-job="{{job.id}}" aria-label="ვაკანსიის შენახვა">☆ შეინახე ვაკანსია</button>
+      {% endif %}
+      <details class="job-privacy"><summary>ვინ ნახავს ჩემს მონაცემებს?</summary><p>CV და მოტივაციის წერილი მიდის მხოლოდ {{job.company}}-ის იმ თანამშრომლებთან, ვისაც შერჩევის უფლება აქვს. სხვა კომპანიები მათ ვერ ხედავენ. განაცხადის გამოთხოვა ნებისმიერ დროს შეგიძლია პირადი სივრციდან.</p></details>
+    </div>
+    {% if more_jobs %}
+    <div class="job-more"><span class="org-label">კიდევ {{job.company}}-ში</span>{% for m in more_jobs %}<a href="/careers/{{m.id}}"><b>{{m.title}}</b><small>{{'{:,}'.format(m.salary_min)}}–{{'{:,}'.format(m.salary_max)}} ₾ · {{m.work_mode}}</small></a>{% endfor %}</div>
+    {% endif %}
+  </aside>
+</section>
+</div>

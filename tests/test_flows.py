@@ -5,7 +5,7 @@ from fastapi.testclient import TestClient
 
 # Use a completely isolated test database, never modify the user's dev database.
 TEST_ROOT=Path(__file__).resolve().parent
-os.environ['DATABASE_URL']='sqlite:///'+str(TEST_ROOT/'integration-test.db')
+os.environ['DATABASE_URL']=os.environ.get('TEST_DATABASE_URL','sqlite:///'+str(TEST_ROOT/'integration-test.db'))
 os.environ['SEED_DEMO']='1'
 sys.path.insert(0,str(TEST_ROOT.parent))
 from server import app,engine,Base,Local,User,Membership,Organization,Job
@@ -98,10 +98,10 @@ def test_training_proposals_are_private_and_selectable():
   propid=r.json()['id']
   assert supplier.get('/api/organizations/2/proposals').status_code==200
   assert candidate.get('/api/organizations/1/proposals').status_code==403
-  assert buyer.get('/api/organizations/1/proposals').json()[0]['id']==propid
+  assert propid in [p['id'] for p in buyer.get('/api/organizations/1/proposals').json()]
   assert supplier.post(f'/api/proposals/{propid}/select',json={}).status_code==403
   assert buyer.post(f'/api/proposals/{propid}/select',json={}).status_code==200
-  assert supplier.get('/api/organizations/2/proposals').json()[0]['status']=='selected'
+  assert next(p for p in supplier.get('/api/organizations/2/proposals').json() if p['id']==propid)['status']=='selected'
 
 def test_podcast_and_no_autoplay():
  with TestClient(app) as c:

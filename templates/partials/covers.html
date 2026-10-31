@@ -1,0 +1,11 @@
+{# Typographic episode covers. Built from the episode's own data, never from stock imagery. #}
+{% macro episode_cover(cover, title, publisher, size='full') -%}
+<div class="ep-cover ep-tone-{{cover.tone}} ep-variant-{{cover.variant}} ep-{{size}}" role="img" aria-label="Voices №{{cover.number}} — {{title}}">
+  <span class="ep-cover-corner">№{{cover.number}}</span>
+  <span class="ep-cover-pattern" aria-hidden="true"></span>
+  <span class="ep-cover-mark" aria-hidden="true">V<b>.</b></span>
+  <span class="ep-cover-topic">{{cover.topic}}</span>
+  <strong class="ep-cover-title">{{title}}</strong>
+  <span class="ep-cover-foot">{{publisher}} · SIVRCE Voices</span>
+</div>
+{%- endmacro %}

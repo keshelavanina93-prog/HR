@@ -1,0 +1,107 @@
+{% from 'partials/covers.html' import episode_cover %}
+{% macro art(item, cls='') -%}
+{% if item.artwork %}<img class="vx-art {{cls}}" src="{{item.artwork}}" alt="" loading="lazy" width="600" height="600">{% else %}<div class="vx-art vx-art-fb {{cls}}" aria-hidden="true"><span>V<b>.</b></span></div>{% endif %}
+{%- endmacro %}
+{% macro playbtn(ep, cls='') -%}
+<button type="button" class="vx-play {{cls}}" data-play="{{ep.id}}" data-url="{{ep.audio}}" data-title="{{ep.title}}" data-show="{{ep.show}}" data-art="{{ep.artwork}}" data-href="/voices/ep/{{ep.id}}" data-duration="{{ep.duration_sec}}" aria-label="მოსმენა: {{ep.title}}"><span class="vx-ico"></span></button>
+{%- endmacro %}
+{% macro epcard(ep) -%}
+<article class="vx-card">
+  <a class="vx-card-art" href="/voices/ep/{{ep.id}}" tabindex="-1" aria-hidden="true">{{ art({"artwork": ep.show_art}) }}</a>
+  {{ playbtn(ep, 'vx-play-over') }}
+  <div class="vx-card-body">
+    <a class="vx-card-show" href="/voices/show/{{ep.show_slug}}">{{ep.show}}</a>
+    <h3><a href="/voices/ep/{{ep.id}}">{{ep.title}}</a></h3>
+    <span class="vx-card-meta">{{ep.date}}{% if ep.duration %} · {{ep.duration}}{% endif %}{% if ep.brief %} · <b>ქართული კონსპექტი</b>{% endif %}</span>
+  </div>
+</article>
+{%- endmacro %}
+
+<div class="vx">
+<section class="vx-masthead frame">
+  <div class="vx-mast-left">
+    <span class="org-label">SIVRCE Voices · ქართული აუდიოს ინდექსი</span>
+    <h1>რას ამბობს<br><em>საქართველო.</em></h1>
+    <p>{{stats.shows}} ქართული შოუ, {{'{:,}'.format(stats.episodes)}} ეპიზოდი — ერთ ფლეერში, ქართული კონსპექტებით და იმ შესაძლებლობებით, რომლებზეც საუბარია.</p>
+  </div>
+  <form class="vx-search" role="search" action="/voices" onsubmit="return false">
+    <label for="vx-q" class="sr-only">ძებნა</label>
+    <input id="vx-q" type="search" placeholder="თემა, სტუმარი, შოუ…" autocomplete="off">
+    <div id="vx-results" class="vx-results" hidden></div>
+  </form>
+</section>
+
+<section id="sv-continue" class="frame vx-continue" hidden>
+  <img class="svc-art" alt="" hidden><div><span class="org-label">გააგრძელე მოსმენა</span><b class="svc-title"></b><span class="svc-show"></span></div>
+  <button type="button" class="vx-resume" data-resume>▶ გაგრძელება</button>
+</section>
+
+{% if hero %}
+<section class="frame vx-hero">
+  <div class="vx-hero-art">{{ art(hero, 'vx-art-big') }}{{ playbtn(hero, 'vx-play-big') }}</div>
+  <div class="vx-hero-copy">
+    <span class="org-label">{% if hero.featured %}რედაქციის არჩევანი{% else %}ახალი{% endif %} · {{hero.date}}{% if hero.duration %} · {{hero.duration}}{% endif %}</span>
+    <a class="vx-hero-show" href="/voices/show/{{hero.show_slug}}">{{hero.show}}</a>
+    <h2><a href="/voices/ep/{{hero.id}}">{{hero.title}}</a></h2>
+    <p>{{ (hero.brief or hero.description)[:320] }}{% if (hero.brief or hero.description)|length > 320 %}…{% endif %}</p>
+    <div class="vx-hero-actions"><a class="primary-btn" href="/voices/ep/{{hero.id}}">ეპიზოდის გვერდი <span>→</span></a>{% if hero.key_points %}<span class="vx-pill">{{hero.key_points|length}} მთავარი აზრი</span>{% endif %}</div>
+  </div>
+</section>
+{% endif %}
+
+{% if this_week %}
+<section class="vx-rail-wrap">
+  <div class="frame vx-rail-head"><h2>ახალი ამ კვირაში</h2><span>{{this_week|length}} ეპიზოდი</span></div>
+  <div class="vx-rail frame">{% for ep in this_week %}{{ epcard(ep) }}{% endfor %}</div>
+</section>
+{% endif %}
+
+{% for lane in lanes %}
+<section class="frame vx-lane" id="lane-{{lane.key}}">
+  <div class="vx-lane-head"><h2>{{lane.label}}</h2><span>{{lane.shows|length}} შოუ</span></div>
+  <div class="vx-lane-body">
+    <div class="vx-lane-eps">{% for ep in lane.episodes %}{{ epcard(ep) }}{% endfor %}{% if not lane.episodes %}<p class="pe-hint">ახალი ეპიზოდი ამ თემაზე ჯერ არ არის.</p>{% endif %}</div>
+    <div class="vx-lane-shows">{% for s in lane.shows %}<a class="vx-show-tile" href="/voices/show/{{s.slug}}">{{ art(s, 'vx-art-sm') }}<span><b>{{s.title}}</b><small>{{s.episodes}} ეპიზოდი{% if s.claimed %} · ✓{% endif %}</small></span></a>{% endfor %}</div>
+  </div>
+</section>
+{% endfor %}
+
+<section class="frame vx-money">
+  <div class="vx-money-card vx-money-ink">
+    <span class="org-label">კომპანიებისთვის</span>
+    <h2>Company Voices</h2>
+    <p>20-წუთიანი ეპიზოდი თქვენი გუნდის ხმით: რა საქმეა, ვინ აკეთებს და რატომ. SIVRCE წერს სცენარს, იწერს დისტანციურად, ამონტაჟებს და აქვეყნებს აქ, თქვენს კომპანიის გვერდზე და ყველა პოდკასტ-აპში. ეპიზოდის გვერდით ჩანს თქვენი ღია ვაკანსიები.</p>
+    <ul><li>სცენარი, ჩაწერა, მონტაჟი, გარეკანი</li><li>ქართული კონსპექტი და ტრანსკრიპტი — Google-ისთვისაც</li><li>გავრცელება: SIVRCE, Spotify, Apple, YouTube</li></ul>
+    <a class="primary-btn" href="/business#pilot">მოითხოვე შეთავაზება <span>→</span></a>
+  </div>
+  <div class="vx-money-card">
+    <span class="org-label">პოდკასტერებისთვის</span>
+    <h2>შენი შოუ უკვე აქ არის?</h2>
+    <p>ჩვენ ვაინდექსებთ საჯარო RSS-ს — ისევე, როგორც Apple ან Spotify. დაადასტურე, რომ შოუ შენია, და მიიღე: ეპიზოდების ქართული ტრანსკრიპტი და ძებნა, გვერდი შენი ბმულებით, სტატისტიკა და „ჩვენთან მუშაობ?“ ბლოკი შენი კომპანიის ვაკანსიებით.</p>
+    <p class="pe-hint">არ გინდა, რომ შოუ აქ იყოს? მოგვწერე და 24 საათში მოვხსნით.</p>
+    <a class="quiet-link" href="/start">შოუს დადასტურება <span>→</span></a>
+  </div>
+</section>
+
+<section class="frame vx-all" id="shows">
+  <div class="vx-lane-head"><h2>ყველა ქართული შოუ</h2><span>{{shows|length}}</span></div>
+  <div class="vx-grid">{% for s in shows %}<a class="vx-show-tile vx-show-grid" href="/voices/show/{{s.slug}}">{{ art(s) }}<span><b>{{s.title}}</b><small>{{s.topic_label}} · {{s.episodes}}{% if s.latest %} · {{s.latest}}{% endif %}</small></span></a>{% endfor %}</div>
+</section>
+
+{% if global_shows %}
+<section class="frame vx-global">
+  <div class="vx-lane-head"><h2>მსოფლიო — ოფიციალური პლეიერით</h2><span>SIVRCE-ის ქართული ანალიზით</span></div>
+  <div class="vx-global-row">{% for ep in global_shows %}<a class="vx-global-card" href="/voices/{{ep.id}}">{{ episode_cover(covers[ep.id], ep.title, ep.publisher, 'mini') }}<span><b>{{ep.title}}</b><small>{{ep.publisher}}</small></span></a>{% endfor %}</div>
+</section>
+{% endif %}
+
+<p class="frame vx-foot">აუდიო და გარეკანი ეკუთვნის გამომცემლებს და უკრავს მათივე სერვერებიდან. SIVRCE ამატებს საკუთარ ქართულ კონსპექტს, თავებს და ძებნას. <a href="/standards">სარედაქციო სტანდარტი ↗</a></p>
+</div>
+<script src="/static/player.js" defer></script>
+<script>
+(()=>{const q=document.getElementById('vx-q'),box=document.getElementById('vx-results');let t=null;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+q.addEventListener('input',()=>{clearTimeout(t);const v=q.value.trim();if(v.length<2){box.hidden=true;return}t=setTimeout(async()=>{const r=await fetch('/api/voices/search?q='+encodeURIComponent(v)).then(r=>r.json()).catch(()=>null);if(!r)return;
+box.innerHTML=(r.shows.map(s=>`<a class="vx-r vx-r-show" href="/voices/show/${esc(s.slug)}">${s.artwork?`<img src="${esc(s.artwork)}" alt="">`:''}<span><b>${esc(s.title)}</b><small>შოუ</small></span></a>`).join('')+r.episodes.map(e=>`<a class="vx-r" href="/voices/ep/${e.id}">${e.artwork?`<img src="${esc(e.artwork)}" alt="">`:''}<span><b>${esc(e.title)}</b><small>${esc(e.show)} · ${esc(e.date)}</small>${e.snippet?`<em>${esc(e.snippet)}</em>`:''}</span></a>`).join(''))||'<p class="pe-hint">ვერაფერი მოიძებნა.</p>';box.hidden=false},250)});
+document.addEventListener('click',e=>{if(!e.target.closest('.vx-search'))box.hidden=true});})();
+</script>

@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="ka"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>შესვლა — SIVRCE</title><link rel="stylesheet" href="/static/product_v5.css"><link rel="stylesheet" href="/static/brand.css"><link rel="stylesheet" href="/static/worlds.css"><script src="/static/onboarding_v5.js" defer></script></head>
+<body class="new-v5 st-body"><a class="skip-link" href="#st-main">შინაარსზე გადასვლა</a>
+<div class="st-shell">
+  <aside class="st-story" aria-label="რეგისტრაციის ეტაპები">
+    <a class="st-brand" href="/">SIVRCE<span>.</span></a>
+    <div class="st-story-body">
+      <span class="org-label">ზღურბლი</span>
+      <h1 id="st-story-title">ერთი ანგარიში.<br><em>შენი როლი.</em></h1>
+      <ol class="st-steps" id="st-steps">
+        <li data-step="0"><span>01</span><b>ანგარიში</b><small>ელფოსტა ან Google</small></li>
+        <li data-step="1"><span>02</span><b>როლი</b><small>კანდიდატი, კომპანია ან მომწოდებელი</small></li>
+        <li data-step="2"><span>03</span><b>ორგანიზაცია</b><small>ოფიციალური მონაცემები</small></li>
+        <li data-step="3"><span>04</span><b>გადამოწმება</b><small>ადამიანი ამოწმებს, არა ალგორითმი</small></li>
+      </ol>
+    </div>
+    <p class="st-story-foot">Google-ით შესვლა ადასტურებს შენს Google ანგარიშს. ის არ ნიშნავს, რომ კომპანიის სახელით გამოქვეყნების უფლება გაქვს — ამას ცალკე ვამოწმებთ.</p>
+  </aside>
+
+  <main class="st-main" id="st-main">
+    <div class="st-top"><span id="stage-title">ნაბიჯი 01 · ანგარიში</span><a href="/business/experience">ჯერ ნახე დემო ↗</a></div>
+    <p class="st-feedback" id="onboard-feedback" role="status" aria-live="polite"></p>
+
+    <section id="auth-stage" class="st-stage">
+      <h2>შედი ან შექმენი ანგარიში</h2>
+      <div class="st-tabs" role="tablist"><button class="active" data-auth="login" role="tab">შესვლა</button><button data-auth="register" role="tab">რეგისტრაცია</button></div>
+      <div id="google-region" class="st-google"><div id="google-login"></div><p id="google-setup-message" class="st-hint"></p></div>
+      <div class="st-sep"><span>ან ელფოსტით</span></div>
+      <form id="auth-form" class="st-form">
+        <label id="full-name-label" hidden>სახელი და გვარი<input name="name" autocomplete="name"></label>
+        <label>ელფოსტა<input required name="email" type="email" autocomplete="email" placeholder="name@company.ge"></label>
+        <label>პაროლი<input required name="password" type="password" autocomplete="current-password" minlength="10" placeholder="მინიმუმ 10 სიმბოლო"></label>
+        <button class="st-primary" id="auth-submit" type="submit">შესვლა →</button>
+        <a class="st-link" href="/account#recovery">დაგავიწყდა პაროლი?</a>
+      </form>
+    </section>
+
+    <section id="role-stage" class="st-stage" hidden>
+      <h2>როგორ იყენებ SIVRCE-ს?</h2>
+      <p class="st-hint">ეს გადაწყვეტს, რა გამოჩნდება შენს სამუშაო სივრცეში. მოგვიანებით სხვა როლსაც დაამატებ.</p>
+      <div class="st-roles">
+        <button type="button" class="st-role" data-role="candidate"><span>ვეძებ სამსახურს ან კურსს</span><b>კანდიდატი</b><small>განაცხადები, შენახული ვაკანსიები, ინტერვიუები</small></button>
+        <button type="button" class="st-role" data-role="company"><span>ვქირაობ და ვავითარებ გუნდს</span><b>კომპანია</b><small>ვაკანსიები, კანდიდატები, სასწავლო მოთხოვნები</small></button>
+        <button type="button" class="st-role" data-role="provider"><span>ვასწავლი</span><b>სასწავლო მომწოდებელი</b><small>კურსები, ჯგუფები, შეთავაზებები კომპანიებს</small></button>
+      </div>
+    </section>
+
+    <section id="candidate-stage" class="st-stage" hidden>
+      <span class="st-ok">✓ ანგარიში მზადაა</span>
+      <h2>დაიწყე შესაძლებლობებით</h2>
+      <p class="st-hint">CV-ს მხოლოდ იმ კომპანიას უგზავნი, რომლის ვაკანსიაზეც განაცხადს აკეთებ. სხვა ორგანიზაციები მას ვერ ხედავენ.</p>
+      <div class="st-next"><a class="st-primary" href="/careers">ვაკანსიების ნახვა →</a><a class="st-secondary" href="/me">ჩემი სივრცე →</a></div>
+    </section>
+
+    <section id="org-stage" class="st-stage" hidden>
+      <h2 id="org-title">კომპანიის მონაცემები</h2>
+      <p class="st-hint">მონაცემებს ხელით ვამოწმებთ საჯარო რეესტრთან. გადამოწმებამდე შეგიძლია დრაფტებზე მუშაობა, მაგრამ საჯაროდ არაფერი ქვეყნდება.</p>
+      <form id="org-form" class="st-form">
+        <label>ოფიციალური დასახელება<input required minlength="3" maxlength="130" name="name" placeholder="შპს ..."></label>
+        <div class="st-two"><label>საიდენტიფიკაციო კოდი<input required pattern="[0-9]{9}" inputmode="numeric" name="registration_code" maxlength="9" placeholder="9 ციფრი"></label><label>მდებარეობა<input name="location" value="თბილისი" required></label></div>
+        <label>ვებსაიტი<input required type="url" name="website" placeholder="https://company.ge"></label>
+        <label>რას აკეთებს ორგანიზაცია<textarea required name="description" rows="4" minlength="50" maxlength="1500"></textarea><small class="st-count" id="desc-count">0 / მინ. 50</small></label>
+        <button class="st-primary" type="submit">გადამოწმების მოთხოვნა →</button>
+      </form>
+    </section>
+
+    <section id="done-stage" class="st-stage" hidden>
+      <h2 id="done-title">გადამოწმება მიმდინარეობს</h2>
+      <p class="st-hint" id="done-org"></p>
+      <ol class="st-verify" id="st-verify"></ol>
+      <h3 class="st-sub">სანამ ელოდები</h3>
+      <div class="st-actions" id="st-actions"></div>
+    </section>
+  </main>
+</div>
+</body></html>

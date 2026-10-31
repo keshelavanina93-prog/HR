@@ -1,0 +1,101 @@
+# Closed beta on a single VM: Caddy (HTTPS + password) → FastAPI → PostgreSQL.
+# Run from the repository root:  docker compose -f deploy/beta/compose.yml --env-file deploy/beta/.env up -d --build
+# DEMO data is enabled and the whole site sits behind a shared password. Do not invite real candidates here.
+name: sivrce-beta
+
+x-app: &app
+  build: ../..
+  restart: unless-stopped
+  env_file: .env
+  environment:
+    DATABASE_URL: postgresql+psycopg://sivrce:${POSTGRES_PASSWORD}@database:5432/sivrce
+    APP_ENV: beta
+    SEED_DEMO: '1'
+    COOKIE_SECURE: '1'
+    PUBLIC_BASE_URL: https://${BETA_DOMAIN}
+    PRIVATE_UPLOAD_DIR: /app/private_uploads
+    PUBLIC_MEDIA_DIR: /app/media
+    CLAMAV_HOST: scanner
+    CLAMAV_PORT: '3310'
+    MAIL_MESSAGE_DOMAIN: ${BETA_DOMAIN}
+
+services:
+  database:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: sivrce
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set in deploy/beta/.env}
+      POSTGRES_DB: sivrce
+    volumes:
+      - database:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U sivrce -d sivrce]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  scanner:
+    image: clamav/clamav:stable
+    restart: unless-stopped
+    volumes:
+      - scanner:/var/lib/clamav
+
+  migrate:
+    <<: *app
+    restart: 'no'
+    command: [python, -m, alembic, upgrade, head]
+    depends_on:
+      database:
+        condition: service_healthy
+
+  web:
+    <<: *app
+    # Only Caddy can reach this container, so its forwarded client IP and scheme are trusted.
+    command: [python, -m, uvicorn, server:app, --host, 0.0.0.0, --port, '8000', --proxy-headers, --forwarded-allow-ips, '*']
+    volumes:
+      - documents:/app/private_uploads
+      - media:/app/media
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request;urllib.request.urlopen('http://127.0.0.1:8000/ready',timeout=3)"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  # Delivers queued e-mail. Started only when SMTP is configured: --profile mail
+  worker:
+    <<: *app
+    command: [python, mail_worker.py]
+    profiles: [mail]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+      - 443:443/udp
+    environment:
+      BETA_DOMAIN: ${BETA_DOMAIN}
+      BETA_USER: ${BETA_USER}
+      BETA_PASSWORD_HASH: ${BETA_PASSWORD_HASH}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - web
+
+volumes:
+  database:
+  documents:
+  media:
+  scanner:
+  caddy_data:
+  caddy_config:

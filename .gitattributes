@@ -7,3 +7,8 @@
 *.yml text eol=lf
 *.sh text eol=lf
 *.bat text eol=crlf
+
+*.json text eol=lf
+*.ini text eol=lf
+*.mako text eol=lf
+Dockerfile text eol=lf

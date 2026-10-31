@@ -1,0 +1,45 @@
+{% set w = world %}
+<div class="org-world course-world" style="--org-accent: {{w.accent}}">
+<section class="course-hero">
+  <div class="frame course-hero-inner">
+    <div>
+      <a href="/learn" class="back-link">← კურსების კატალოგი</a>
+      <div class="eyebrow">{{course.category}} · {{course.format}}{% if provider.demo %} · <b class="demo-label">DEMO</b>{% endif %}</div>
+      <h1>{{course.title}}</h1>
+      <p class="org-tagline">{{course.description}}</p>
+      <a class="job-org" href="/organizations/{{provider.slug}}"><span class="job-org-mark" aria-hidden="true">{{provider.name[:1]}}</span><span><b>{{provider.name}}</b><small>სასწავლო მომწოდებელი · პროფილი ↗</small></span></a>
+    </div>
+    <div class="course-price">
+      <span class="org-label">ფასი ერთ მონაწილეზე</span>
+      <b>{{'{:,}'.format(course.price)}} ₾</b>
+      <dl><div><dt>ხანგრძლივობა</dt><dd>{{course.duration}}</dd></div><div><dt>ფორმატი</dt><dd>{{course.format}}</dd></div><div><dt>ტრენერი</dt><dd>{{course.trainer}}</dd></div></dl>
+    </div>
+  </div>
+</section>
+
+<section class="frame course-body">
+  <div class="course-main">
+    <div class="job-block"><span class="org-label">01 · რას შეძლებ კურსის შემდეგ</span>
+      <ol class="outcome-grid">{% for o in outcome_list %}<li><span>{{'%02d'|format(loop.index)}}</span><p>{{o}}</p></li>{% endfor %}</ol>
+    </div>
+    <div class="job-block"><span class="org-label">02 · პროგრამა</span>
+      <ol class="module-line">{% for m in module_list %}<li><span>მოდული {{loop.index}}</span><b>{{m}}</b></li>{% endfor %}</ol>
+    </div>
+    <div class="job-block"><span class="org-label">03 · ვინ ასწავლის</span><p class="course-trainer">{{course.trainer}}</p></div>
+  </div>
+
+  <aside class="job-aside">
+    <div class="apply-card job-apply">
+      <span class="org-label">ჯგუფები</span>
+      {% for co in cohorts %}
+      <div class="cohort-card"><div><b>{{co.starts}}</b><small>{{co.location}} · {{co.capacity}} ადგილი</small></div><button class="small-action" data-course-interest="{{co.id}}" data-course-title="{{course.title}}">დაინტერესება ↗</button></div>
+      {% else %}<p class="job-closed">ახალი ჯგუფის თარიღი ჯერ არ არის გამოცხადებული.</p>{% endfor %}
+      <button class="primary-btn full" data-modal="brief-from-course" data-title="{{course.title}}">მოითხოვე გუნდისთვის ↗</button>
+      <p class="small-print">დაინტერესება არ არის ჯავშანი ან გადახდა. მომწოდებელი დაგიკავშირდება ადგილისა და ფასის დასადასტურებლად. გუნდის მოთხოვნა გადადის ტრენინგების ბირჟაზე, სადაც სხვა მომწოდებლებიც შემოგთავაზებენ.</p>
+    </div>
+    {% if other_courses %}
+    <div class="job-more"><span class="org-label">კიდევ {{provider.name}}-სგან</span>{% for c in other_courses %}<a href="/learn/{{c.id}}"><b>{{c.title}}</b><small>{{'{:,}'.format(c.price)}} ₾ · {{c.duration}}</small></a>{% endfor %}</div>
+    {% endif %}
+  </aside>
+</section>
+</div>

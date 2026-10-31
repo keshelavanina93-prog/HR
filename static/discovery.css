@@ -1,0 +1,10 @@
+/* Keep the existing visual system; prioritize discovery and decision information. */
+body[data-page=careers] .page-hero,body[data-page=learn] .page-hero,body[data-page=exchange] .page-hero{padding-top:38px;padding-bottom:28px}
+body[data-page=careers] .page-hero h1,body[data-page=learn] .page-hero h1,body[data-page=exchange] .page-hero h1{font-size:clamp(32px,4.5vw,58px);line-height:1.25;letter-spacing:-.035em}
+body[data-page=careers] .filter-bar{margin-top:28px}
+body[data-page=careers] .page-hero-grid,body[data-page=learn] .page-hero-grid{gap:22px}
+body[data-page=job] .detail-heading{padding-top:28px;padding-bottom:30px}
+body[data-page=job] .detail-heading h1{font-size:clamp(32px,5vw,64px);line-height:1.2}
+body[data-page=job] .back-link{margin-bottom:24px}
+body[data-page=job] .detail-grid{padding-top:28px}
+@media(max-width:1000px){body[data-page=job] .detail-grid{display:flex;flex-direction:column}body[data-page=job] .apply-card{order:-1;width:100%;position:static}body[data-page=careers] .page-aside p{margin-top:12px}body[data-page=careers] .page-hero{padding-top:28px}}

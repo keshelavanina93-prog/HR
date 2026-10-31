@@ -33,3 +33,6 @@ dist/
 .DS_Store
 Thumbs.db
 *.log
+
+# Public organization photographs (uploaded by organizations)
+media/

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "brand": "SIVRCE",
+  "version": "2026-system-v1",
+  "noGreen": true,
+  "color": {
+    "ink": "#14141A",
+    "deep": "#1B1C27",
+    "paper": "#F5F4F1",
+    "surface": "#FFFFFF",
+    "line": "#DCDBD7",
+    "soft": "#EDEDEA",
+    "cobalt": "#4754E8",
+    "violet": "#6558C2",
+    "wine": "#7F394E",
+    "muted": "#6D6C75",
+    "focus": "#4754E8"
+  },
+  "typography": {
+    "ui": ["Noto Sans Georgian", "DM Sans", "sans-serif"],
+    "editorial": ["Noto Serif Georgian", "Georgia", "serif"],
+    "body": "14px / 1.55",
+    "sectionTitle": "36–74px responsive",
+    "functionalLabels": "10–12px high contrast"
+  },
+  "spacingScalePx": [4,8,12,16,20,24,32,40,56,72,96],
+  "motion": {"fast": "150ms", "medium": "240ms", "max": "320ms", "reducedMotion": "disable non-essential"},
+  "radius": {"input": "0px", "card": "0–4px", "pill": "999px (only metadata status)"},
+  "designRules": [
+    "No green brand accents",
+    "No fake company logos or human photos",
+    "No ungrounded ROI metrics or simulated social proof",
+    "Business workspace prioritizes action and state, not decorative statistics",
+    "All demo data is visibly marked as sample",
+    "Keyboard and focus-visible are mandatory",
+    "Georgian copy is authored first, not auto-translated from English"
+  ]
+}

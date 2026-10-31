@@ -1,0 +1,56 @@
+<!doctype html><html lang="ka"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>კომპანიის გვერდის რედაქტორი — SIVRCE</title><link rel="stylesheet" href="/static/product_v5.css"><link rel="stylesheet" href="/static/operations.css"><link rel="stylesheet" href="/static/brand.css"><link rel="stylesheet" href="/static/worlds.css"><script src="/static/profile_editor.js" defer></script></head>
+<body class="new-v5 profile-editor">
+<header class="pe-top"><a class="side-brand" href="/workspace">SIVRCE<span>.</span></a><span id="pe-org-name" class="pe-org">—</span><a id="pe-preview" class="pe-preview" href="#" target="_blank" rel="noopener" hidden>საჯარო გვერდის ნახვა ↗</a></header>
+<main class="pe-layout">
+  <div class="pe-main">
+    <div class="pe-intro"><span class="org-label">კომპანიის სამყარო</span><h1>აჩვენე, როგორ<br><em>მუშაობთ სინამდვილეში.</em></h1><p>კანდიდატი აქ ხედავს თქვენს საქმეს, სამუშაო დღეს, ადამიანებს და იმას, რაც რთულია. დაწერეთ კონკრეტულად და ატვირთეთ მხოლოდ საკუთარი ფოტოები.</p></div>
+    <p id="pe-status" class="pe-status" role="status" aria-live="polite"></p>
+    <div id="pe-blocked" class="ops-card" hidden></div>
+
+    <form id="pe-form" class="pe-form" hidden novalidate>
+      <section class="pe-card"><h2>01 · მთავარი</h2>
+        <label>მოკლე აღწერა (ერთი წინადადება)<input name="tagline" maxlength="200" placeholder="მაგ.: ვაშენებთ ლოჯისტიკას, რომელიც ღამითაც მუშაობს."></label>
+        <div class="pe-two"><label>გუნდის ზომა<input name="team_size" maxlength="40" placeholder="მაგ.: 120 ადამიანი"></label><label>დაარსების წელი<input name="founded" inputmode="numeric" pattern="\d{4}" maxlength="4" placeholder="2015"></label></div>
+        <fieldset class="pe-accents"><legend>გვერდის ფერი</legend><div id="pe-accent-list"></div></fieldset>
+        <label>რას აკეთებთ და რატომ <small>მინიმუმ 120 სიმბოლო</small><textarea name="mission" rows="4" maxlength="2000"></textarea></label>
+      </section>
+
+      <section class="pe-card"><h2>02 · ჩვეულებრივი სამუშაო დღე</h2><p class="pe-hint">3–8 მომენტი. დრო, რა ხდება და ვინ არის ჩართული.</p>
+        <div id="pe-day" class="pe-rows"></div><button type="button" class="pe-add" id="pe-add-day">+ მომენტის დამატება</button>
+      </section>
+
+      <section class="pe-card"><h2>03 · ადამიანები</h2><p class="pe-hint">გამოაქვეყნეთ მხოლოდ ის ადამიანები, ვინც ამაზე თანახმაა. ფოტოს მიბმა შესაძლებელია მხოლოდ თანხმობით ატვირთულ ფოტოზე.</p>
+        <div id="pe-people" class="pe-rows"></div><button type="button" class="pe-add" id="pe-add-person">+ ადამიანის დამატება</button>
+      </section>
+
+      <section class="pe-card"><h2>04 · გულწრფელად</h2>
+        <label>რა არის ამ სამუშაოში რთული <small>თითო ხაზზე ერთი</small><textarea name="hard_parts" rows="4" maxlength="1500"></textarea></label>
+        <label>როგორ მუშაობთ (კულტურა, გრაფიკი, გადაწყვეტილებები)<textarea name="culture" rows="4" maxlength="2000"></textarea></label>
+        <label>შერჩევის დაპირება (პასუხის ვადა, ეტაპები, დავალებები)<textarea name="hiring_promise" rows="3" maxlength="1500"></textarea></label>
+      </section>
+      <div class="pe-save"><button class="ops-primary pe-primary" type="submit">გვერდის შენახვა</button><span id="pe-saved" class="pe-hint"></span></div>
+    </form>
+
+    <section class="pe-card" id="pe-photos-card" hidden><h2>05 · ფოტოები</h2>
+      <p class="pe-hint">JPEG, PNG ან WebP · მაქსიმუმ 5 MB · მოკლე მხარე მინიმუმ 600px. ატვირთვისას ფოტოს მეტამონაცემები (მათ შორის GPS) იშლება. სტოკ და AI-ით გენერირებული ფოტოები არ გამოიყენოთ.</p>
+      <form id="pe-upload" class="pe-upload">
+        <label>ფაილი<input type="file" name="file" accept="image/jpeg,image/png,image/webp" required></label>
+        <div class="pe-two"><label>ტიპი<select name="role"><option value="cover">მთავარი ფოტო</option><option value="gallery" selected>სამუშაო გარემო</option><option value="person">ადამიანის პორტრეტი</option></select></label><label>ფოტოს ავტორი<input name="credit" maxlength="140" required placeholder="მაგ.: ნიკა ბ. / კომპანიის არქივი"></label></div>
+        <label>რა ჩანს ფოტოზე <small>ეკრანის წამკითხველისთვის, 8–240 სიმბოლო</small><input name="alt" maxlength="240" required></label>
+        <label>წარწერა (არასავალდებულო)<input name="caption" maxlength="240"></label>
+        <fieldset class="pe-consent"><legend>ფოტოზე ადამიანები</legend>
+          <label class="pe-check"><input type="radio" name="people_consent" value="no_people" checked> ფოტოზე ამოსაცნობი ადამიანები არ ჩანან</label>
+          <label class="pe-check"><input type="radio" name="people_consent" value="confirmed"> ყველა ამოსაცნობმა ადამიანმა თანხმობა განაცხადა გამოქვეყნებაზე</label>
+        </fieldset>
+        <label class="pe-check"><input type="checkbox" name="rights_confirmed" value="true" required> ვადასტურებ, რომ ორგანიზაციას აქვს ამ ფოტოს გამოყენების უფლება</label>
+        <button class="ops-primary pe-primary" type="submit">ატვირთვა</button>
+      </form>
+      <div id="pe-photo-list" class="pe-photo-list"></div>
+    </section>
+  </div>
+
+  <aside class="pe-side" aria-label="გვერდის სისრულე">
+    <div class="pe-score"><span class="org-label">გვერდის სისრულე</span><b id="pe-score">0/7</b><ul id="pe-checklist"></ul><p class="pe-hint">სრული გვერდი კანდიდატს აძლევს საკმარის ინფორმაციას გადაწყვეტილებისთვის. ცარიელი ველები საჯაროდ არ ჩანს.</p></div>
+  </aside>
+</main>
+</body></html>
